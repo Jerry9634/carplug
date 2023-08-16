@@ -58,3 +58,13 @@ CAN signal viewer
 
 
 # 6. Build and Run
+## 0) Install Node.js
+## 1) Build and run signal server
+- download 'car-plug-server'
+- install node modules: npm install
+- run the app: npm start gw
+## 2) Install dashboard apk on your Android tablet and run it
+## 3) Build and run signal viewer (optional)
+- download 'car-plug-viewer'
+- install node modules: npm install
+- run the app: npm start
