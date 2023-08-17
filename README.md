@@ -39,8 +39,8 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 
 ## 4) vehicle simulation (TBD)
 
-## 5) dashboard desktop-version (development purpose only)
-For people who don't have Android tablet.
+## 5) dashboard desktop version (development purpose only)
+For people who don't have any Android tablet.
 
 ## 6) signal viewer (development purpose only)
 CAN signal viewer
@@ -70,16 +70,24 @@ CAN signal viewer
 
 
 # 6. Build and Run
-## 0) Install Node.js
-## 1) Build and run signal server
+## 0) Install Node.js on your computer
+## 1) Vehicle signal server
 - download 'car-plug-server'
 - install node modules: npm install
 - run the app: npm start gw
-## 2) Install dashboard apk on your Android tablet and run it
+## 2) Dashboard (main HMI)
 - download 'dashboard/VirtualDashboard-debug.apk' (zipped)
-- unzip and install it
+- unzip and install it on your Android tablet
 - run it
-## 3) Build and run signal viewer (optional)
+## 3) Dashboard desktop version (main HMI)
+- download 'dashboard-proxy-server'
+- install node modules: npm install
+- run the app: node src/index
+- download 'dashboard-client'
+- install node modules: npm install
+- generate your Google Map API key and fill it in the '.env' file
+- run the app: npm start
+## 4) Signal viewer (optional)
 - download 'car-plug-viewer'
 - install node modules: npm install
 - run the app: npm start
