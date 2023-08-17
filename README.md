@@ -16,21 +16,33 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 ## 1) screenshots
 - Car Control [car control pictures](demo/screenshots/01_Dashboard_CarControl/car_control.md)
 - Media: Radio, Netflix, YouTube, ... [media pictures](demo/screenshots/02_Dashboard_Media/media.md)
+- Navigation: comming soon
+- Climate: comming soon
+- Camera: comming soon
 ## 2) videos (Screen recording)
 - Car Control
 - Media: Radio, Netflix, YouTube, ...
-
+- Navigation: comming soon
+- Climate: comming soon
+- Camera: comming soon
 
 # 4. Architecture: Building Blocks
 ![overall architecture](carplug_architecture.png)
 
-## 1) dashboard (Tesla-style touchscreen UI)
+## 1) dashboard (Tesla-style touchscreen UI, main HMI)
 **Android**(not Android Automotive) and **React Native** based touchscreen infotainment UI
 
 ## 2) signal server
 **Node.js** signal server/gateway for interconnecting **Legacy CAN** Domains and IP-based **High-Performance Computers**
 
-## 3) signal viewer (development purpose only)
+## 3) phone app (TBD)
+
+## 4) vehicle simulation (TBD)
+
+## 5) dashboard desktop-version (development purpose only)
+For people who don't have Android tablet.
+
+## 6) signal viewer (development purpose only)
 CAN signal viewer
 
 
@@ -64,6 +76,9 @@ CAN signal viewer
 - install node modules: npm install
 - run the app: npm start gw
 ## 2) Install dashboard apk on your Android tablet and run it
+- download 'dashboard/VirtualDashboard-debug.apk' (zipped)
+- unzip and install it
+- run it
 ## 3) Build and run signal viewer (optional)
 - download 'car-plug-viewer'
 - install node modules: npm install
