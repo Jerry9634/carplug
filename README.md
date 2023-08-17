@@ -22,7 +22,7 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 
 
 # 4. Architecture: Building Blocks
-![overall architecture](carplug architecture.png)
+![overall architecture](carplug_architecture.png)
 
 ## 1) dashboard (Tesla-style touchscreen UI)
 **Android**(not Android Automotive) and **React Native** based touchscreen infotainment UI
