@@ -73,21 +73,23 @@ CAN signal viewer
 ## 0) Install Node.js on your computer
 ## 1) Vehicle signal server
 - download 'car-plug-server'
-- install node modules: npm install
-- run the app: npm start gw
+- install node modules [console]: npm install
+- run the app [console]: npm start gw
 ## 2) Dashboard (main HMI)
 - download 'dashboard/VirtualDashboard-debug.apk' (zipped)
 - unzip and install it on your Android tablet. Continue installation even though some security warnings show up.
 - run it
 ## 3) Dashboard desktop version (main HMI)
 - download 'dashboard-proxy-server'
-- install node modules: npm install
-- run the app: node src/index
+- install node modules [console]: npm install
+- run the app [console]: node src/index
 - download 'dashboard-client'
-- install node modules: npm install
 - generate your Google Map API key and fill it in the '.env' file
-- run the app: npm start
+- install 'serve' module [console]: npm install -g serve
+- run the app [console]: serve -s
+- open browser (chrome) and type: localhost:3000
 ## 4) Signal viewer (optional)
 - download 'car-plug-viewer'
-- install node modules: npm install
-- run the app: npm start
+- install 'serve' module [console]: npm install -g serve
+- run the app [console]: serve -s
+- open browser (chrome) and type: localhost:3000 
