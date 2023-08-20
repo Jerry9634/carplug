@@ -77,7 +77,7 @@ CAN signal viewer
 - run the app: npm start gw
 ## 2) Dashboard (main HMI)
 - download 'dashboard/VirtualDashboard-debug.apk' (zipped)
-- unzip and install it on your Android tablet
+- unzip and install it on your Android tablet. Continue installation even though some security warnings show up.
 - run it
 ## 3) Dashboard desktop version (main HMI)
 - download 'dashboard-proxy-server'
