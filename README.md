@@ -80,10 +80,10 @@ CAN signal viewer
 - unzip and install it on your Android tablet. Continue installation even though some security warnings show up.
 - run it
 ## 3) Dashboard desktop version (main HMI)
-- download 'dashboard-proxy-server'
+- download 'dashboard-pc/dashboard-proxy-server'
 - install node modules [console]: npm install
 - run the app [console]: node src/index
-- download 'dashboard-client'
+- download 'dashboard-pc/dashboard-client'
 - generate your Google Map API key and fill it in the '.env' file
 - install 'serve' module [console]: npm install -g serve
 - run the app [console]: serve -s
