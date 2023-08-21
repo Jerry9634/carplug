@@ -82,7 +82,7 @@ CAN signal viewer
 ## 3) Dashboard desktop version (main HMI)
 - download 'dashboard-pc/dashboard-proxy-server'
 - install node modules [console]: npm install
-- run the app [console]: node src/index
+- run the app [console]: npm start
 - download 'dashboard-pc/dashboard-client'
 - generate your Google Map API key and fill it in the '.env' file
 - install 'serve' module [console]: npm install -g serve
@@ -92,4 +92,4 @@ CAN signal viewer
 - download 'car-plug-viewer'
 - install 'serve' module [console]: npm install -g serve
 - run the app [console]: serve -s
-- open browser (chrome) and type: localhost:3000 
+- open browser (chrome) and type: localhost:3000
