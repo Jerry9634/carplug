@@ -22,9 +22,9 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 ## 2) videos (Screen recording)
 - Car Control
 - Media: Radio, Netflix, YouTube, ...
-- Navigation: coming soon
-- Climate: coming soon
-- Camera: coming soon
+- Navigation: Third-party map (Kakao, Google), Simulated Driving (Google map)
+- Climate Control
+- Camera
 
 # 4. Architecture: Building Blocks
 ![overall architecture](carplug_architecture.png)
