@@ -16,8 +16,8 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 ## 1) screenshots
 - Car Control [car control pictures](demo/screenshots/01_Dashboard_CarControl/car_control.md)
 - Media: Radio, Netflix, YouTube, ... [media pictures](demo/screenshots/02_Dashboard_Media/media.md)
-- Navigation: coming soon
-- Climate: coming soon
+- Navigation [navigation pictures](demo/screenshots/03_Dashboard_Navigation/navigation.md)
+- Climate [climate pictures](demo/screenshots/04_Dashboard_Climate/climate.md)
 - Camera: coming soon
 ## 2) videos (Screen recording)
 - Car Control
