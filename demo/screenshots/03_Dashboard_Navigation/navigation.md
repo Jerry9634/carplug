@@ -1,3 +1,5 @@
+* The same third-party maps from tech companies that phone users are familiar with can be reused without any change.
+
 - Third-party map: Kakao
   ![pic1](./Screenshot_20230823090930.jpg)
 
