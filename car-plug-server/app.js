@@ -53,10 +53,10 @@ app.use(function(err, req, res, next) {
 });
 
 
-const { GATEWAY, PHONE, CAR } = require("./carplug_core/options");
+const { GATEWAY, DASHBOARD } = require("./carplug_core/options");
 
 const settings = {
-	serverLoc  : PHONE,
+	serverLoc  : DASHBOARD,
 	serverAddr : "127.0.0.1", // localhost
 	serverPort : 41234,
 	clientPort : 41235,
@@ -67,65 +67,53 @@ const args = process.argv.slice(2);
 
 if (args.length != 0) {
 	const loc = args[0];
-	if (loc == "gw" || loc == "GW" || loc == "CCU" || loc == GATEWAY) {
+	if (loc === "gw" || loc === "GW" || loc === "CCU" || loc === GATEWAY) {
 		settings.serverLoc = GATEWAY;
 
 		if (args.length > 1) {
 			const gen = args[1];
-			if (gen == "on" || gen == "ON" || gen == "On") {
+			if (gen === "on" || gen === "ON" || gen === "On") {
 				settings.trafficGen = true;
 			}
-			else if (gen == "off" || gen == "OFF" || gen == "Off") {
+			else if (gen === "off" || gen === "OFF" || gen === "Off") {
 				settings.trafficGen = false;
 			}
 		}
-	}
-	else if (loc == PHONE || loc == CAR) {
-		if (loc == PHONE) {
-			settings.serverLoc = PHONE;
-		}
-		else {
-			settings.serverLoc = CAR;
-		}
 
-		if (args.length > 1) {
-			settings.serverAddr = args[1];
-		}
+		setTitle("Gateway Simulator (CCU)");
+		const ccu_simulator = require("./carplug_core/ccu_simulator");
+		ccu_simulator.start(settings);
+	
+		// To be run on Android, disable this.
+		//setTimeout(() => {
+		//	const uds_ipc = require("./carplug_core/uds_ipc");
+		//	uds_ipc.start();
+		//}, 1000);
+	
+		// WebRTC signaling server
+		const httpServer = createServer(app);
+		let ioPort = process.env.PORT || 3500;
+		initIO(httpServer);
+		httpServer.listen(ioPort)
+		console.log("WebRTC Signaling Server started on ", ioPort);
+		getIO();
+		// End of WebRTC
+	
+		const socketIOServer = createServer(app);
+		initVehicleSocketIO(socketIOServer);
+		socketIOServer.listen(3501);
+		console.log("Vehicle Signal Socket.IO Server started on ", 3501);
 	}
 }
 
-if (settings.serverLoc == GATEWAY) {
-	setTitle("Gateway Simulator (CCU)");
-	const ccu_simulator = require("./carplug_core/ccu_simulator");
-	ccu_simulator.start(settings);
+if (settings.serverLoc !== GATEWAY) {
+	settings.serverLoc = DASHBOARD;
 
-	// To be run on Android, disable this.
-	//setTimeout(() => {
-	//	const uds_ipc = require("./carplug_core/uds_ipc");
-	//	uds_ipc.start(settings);
-	//}, 1000);
+	if (args.length > 1) {
+		settings.serverAddr = args[1];
+	}
 
-	// WebRTC signaling server
-	const httpServer = createServer(app);
-	let ioPort = process.env.PORT || 3500;
-	initIO(httpServer);
-	httpServer.listen(ioPort)
-	console.log("WebRTC Signaling Server started on ", ioPort);
-	getIO();
-	// End of WebRTC
-
-	const socketIOServer = createServer(app);
-	initVehicleSocketIO(socketIOServer);
-	socketIOServer.listen(3501);
-	console.log("Vehicle Signal Socket.IO Server started on ", 3501);
-}
-else if (settings.serverLoc == CAR) {
 	setTitle("CarPlug Server on Car");
-	const auto_sync_com = require("./carplug_core/auto_sync_com");
-	auto_sync_com.start(settings);
-}
-else {
-	setTitle("CarPlug Server on Phone");
 	const auto_sync_com = require("./carplug_core/auto_sync_com");
 	auto_sync_com.start(settings);
 }

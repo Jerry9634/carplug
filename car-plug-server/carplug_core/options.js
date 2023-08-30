@@ -1,6 +1,5 @@
 const GATEWAY = "gateway";
-const PHONE = "phone";
-const CAR = "car";
+const DASHBOARD = "dashboard";
 
 const BUFLEN = 1000000;	//Max length of buffer
 
@@ -26,8 +25,7 @@ const CAN_MSG_STATUS_CLEAR_FLAGS = ( CAN_MSG_STATUS_UPDATED | CAN_MSG_STATUS_CHA
 
 module.exports = {
 	GATEWAY,
-	PHONE,
-	CAR,
+	DASHBOARD,
 	
 	BUFLEN,
 	

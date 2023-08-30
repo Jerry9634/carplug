@@ -3,7 +3,7 @@
  */
 
 const {
-	PHONE,
+	DASHBOARD,
 	
 	BUFLEN,
 	SYNC_MESSAGE_LEN_MIN,
@@ -14,7 +14,7 @@ const {
 } = require('./options');
 
 const settings = {
-	serverLoc : PHONE,
+	serverLoc : DASHBOARD,
 	serverAddr : "127.0.0.1", // localhost
 	serverPort : 41234,
 	clientPort : 41235

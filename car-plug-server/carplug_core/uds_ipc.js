@@ -9,23 +9,11 @@ const {
 	parentPort
 } = require('node:worker_threads');
 
-const {
-	PHONE,
-	CAR,
-	GATEWAY,
-} = require('./options');
-
-const SOCKET_NAME_PHONE = "/tmp/carplug.socket.phone";
-const SOCKET_NAME_CAR = "/tmp/carplug.socket.car";
-const SOCKET_NAME_GATEWAY = "/tmp/carplug.socket.gateway";
-
-const SOCKET_NAME_PHONE_WIN = "\\\\.\\pipe\\carplug.socket.phone";
-const SOCKET_NAME_CAR_WIN = "\\\\.\\pipe\\carplug.socket.car";
-const SOCKET_NAME_GATEWAY_WIN = "\\\\.\\pipe\\carplug.socket.gateway";
+const SOCKET_NAME = "/tmp/carplug.socket";
+const SOCKET_NAME_WIN = "\\\\.\\pipe\\carplug.socket";
 
 const settings = {
-	serverLoc : PHONE,
-	socketName: SOCKET_NAME_PHONE
+	socketName: SOCKET_NAME
 };
 
 
@@ -45,38 +33,19 @@ const ColorType = {
 const Bold_Style = 1;
 
 
-module.exports.start = (arg) => {
+module.exports.start = () => {
 	if (!isMainThread)
 		return;
 		
 	const signalDB = require("./signal_db");
 
-	settings.serverLoc = arg.serverLoc;
-
 	if (os.type() == "Windows_NT") {
-		if (settings.serverLoc == PHONE) {
-			settings.socketName = SOCKET_NAME_PHONE_WIN;
-		}
-		else if (settings.serverLoc == CAR) {
-			settings.socketName = SOCKET_NAME_CAR_WIN;
-		}
-		else if (settings.serverLoc == GATEWAY) {
-			settings.socketName = SOCKET_NAME_GATEWAY_WIN;
-		}
+		settings.socketName = SOCKET_NAME_WIN;
 	}
 	else {
-		if (settings.serverLoc == PHONE) {
-			settings.socketName = SOCKET_NAME_PHONE;
-		}
-		else if (settings.serverLoc == CAR) {
-			settings.socketName = SOCKET_NAME_CAR;
-		}
-		else if (settings.serverLoc == GATEWAY) {
-			settings.socketName = SOCKET_NAME_GATEWAY;
-		}
+		settings.socketName = SOCKET_NAME;
 	}
 
-	setEnvironmentData("serverLoc", settings.serverLoc);
 	setEnvironmentData("socketName", settings.socketName);
 	
 	// This re-loads the current file inside a Worker instance.
@@ -165,7 +134,6 @@ function uds_ipc() {
 	if (isMainThread)
 		return;
 	
-	settings.serverLoc = getEnvironmentData("serverLoc");
 	settings.socketName = getEnvironmentData("socketName");
 
 	const fs = require('fs');
