@@ -90,7 +90,7 @@ const udpClient = dgram.createSocket('udp4');
 var serverAddress = null;
 
 function findServerIP() {
-  const message = Buffer.from("Hello!");
+  const message = Buffer.from("Knock!");
 
   udpClient.on('error', (err) => {
     console.error(`server error:\n${err.stack}`);
@@ -103,7 +103,7 @@ function findServerIP() {
     console.log(`server listening ${address.address}:${address.port}`);
   });
   
-  udpClient.bind(process.env.AUTO_SYNC_SERVER_PORT);
+  udpClient.bind(process.env.FIND_SERVER_PORT);
   
   udpClient.send(message, process.env.AUTO_SYNC_CLIENT_PORT, "255.255.255.255", (err) => {
     if (err != null) {

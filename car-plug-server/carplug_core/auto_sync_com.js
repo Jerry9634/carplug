@@ -82,6 +82,14 @@ function fromOther() {
 			}
 			else {
 				//console.log(msg.toString());
+				if (msg.toString() === "Knock!") {
+					const message = Buffer.from("Coming!");
+					udpClient.send(message, process.env.FIND_SERVER_PORT, rinfo.address, (err) => {
+						if (err != null) {
+						  console.log(err);
+					  }
+				  });
+				}
 			}
 		}
 	});
