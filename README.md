@@ -74,10 +74,10 @@ CAN signal viewer
 ## 1) Vehicle signal server
 - Download 'car-plug-server'.
 - Install node modules [console]: npm install
-- Run the app [console]: npm start gw
+- Run the app [console]: npm start
 - Signal server can be executed on your Android tablet using Android terminal emulator such as Termux.
 ## 2) Dashboard (main HMI)
-- Download 'dashboard/VirtualDashboard-debug.zip'.
+- Download 'dashboard/VirtualDashboard-release.zip'.
 - Unzip and install it on your Android tablet. Continue installation even though some security warnings show up.
 - Run the app.
 ## 3) Dashboard desktop version (main HMI)
