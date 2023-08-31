@@ -380,7 +380,7 @@ function setSignal(name, value) {
 	
 	if (signal != null) {
 		const msg = pduIdMap.get(signal.canId);
-		if (msg != null && msg.direction == CAN_DIRECTION_TX) {
+		if (msg != null/* && msg.direction == CAN_DIRECTION_TX*/) {
 			if (signal.length <= 32) {
 				let max;
 				if (signal.length < 32) {

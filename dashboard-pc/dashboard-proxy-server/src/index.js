@@ -5,7 +5,7 @@ const {
   findServerIP
 } = require("./app");
 
-const port = process.env.PORT || 5000;
+const port = process.env.PROXY_SERVER_PORT;
 app.listen(port, () => {
 	/* eslint-disable no-console */
 	console.log(`Listening: http://localhost:${port}`);

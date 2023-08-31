@@ -24,8 +24,8 @@ const {
 
 const settings = {
 	serverLoc  : GATEWAY,
-	serverPort : 41234,
-	clientPort : 41235,
+	serverPort : 0,
+	clientPort : 0,
 	trafficGen : false
 };
 

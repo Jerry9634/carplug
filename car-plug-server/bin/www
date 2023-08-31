@@ -11,18 +11,12 @@ var http = require('http');
 /**
  * Get port from environment and store in Express.
  */
-var port = normalizePort(process.env.PORT || '5002');
+var port = normalizePort(process.env.HTTP_PORT);
 const args = process.argv.slice(2);
 
 if (args.length != 0) {
-	const serverLoc = args[0];
-	if (serverLoc == "gw" || serverLoc == "GW" || serverLoc == "CCU" || serverLoc == "gateway") {
-		port = "5001";
-	}
-	else if (serverLoc == "phone") {
-		port = "5002";
-	}
-	else if (serverLoc == "car") {
+	const serverLoc = args[0].toLowerCase();
+	if (serverLoc == "gw" || serverLoc == "ccu" || serverLoc == "gateway") {
 		port = "5002";
 	}
 }
@@ -40,6 +34,7 @@ var server = http.createServer(app);
  */
 
 server.listen(port);
+console.log("HTTP Server started on:", port);
 server.on('error', onError);
 server.on('listening', onListening);
 

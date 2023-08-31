@@ -103,10 +103,9 @@ function findServerIP() {
     console.log(`server listening ${address.address}:${address.port}`);
   });
   
-  udpClient.bind(41235);
-  // Prints: server listening 0.0.0.0:41235
+  udpClient.bind(process.env.AUTO_SYNC_SERVER_PORT);
   
-  udpClient.send(message, 41234, "255.255.255.255", (err) => {
+  udpClient.send(message, process.env.AUTO_SYNC_CLIENT_PORT, "255.255.255.255", (err) => {
     if (err != null) {
       console.log(err);
     }

@@ -16,8 +16,8 @@ const {
 const settings = {
 	serverLoc : DASHBOARD,
 	serverAddr : "127.0.0.1", // localhost
-	serverPort : 41234,
-	clientPort : 41235
+	serverPort : 0,
+	clientPort : 0
 };
 
 const signalDB = require('./signal_db');
