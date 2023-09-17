@@ -1,13 +1,15 @@
-const net = require('node:net');
-const os = require('os');
-
-const {
+import net from 'node:net';
+import os from 'os';
+import {
 	Worker,
 	isMainThread,
 	setEnvironmentData,
 	getEnvironmentData,
 	parentPort
-} = require('node:worker_threads');
+} from 'node:worker_threads';
+
+import { getSignal, setSignal, getCanMessageStorage } from "./signal_db.js";
+
 
 const SOCKET_NAME = "/tmp/carplug.socket";
 const SOCKET_NAME_WIN = "\\\\.\\pipe\\carplug.socket";
@@ -33,12 +35,10 @@ const ColorType = {
 const Bold_Style = 1;
 
 
-module.exports.start = () => {
+export function start() {
 	if (!isMainThread)
 		return;
 		
-	const signalDB = require("./signal_db");
-
 	if (os.type() == "Windows_NT") {
 		settings.socketName = SOCKET_NAME_WIN;
 	}
@@ -63,7 +63,7 @@ module.exports.start = () => {
 		if (cmd.indexOf("get") == 0) {
 			const names = String(cmd).substring(4).split(" ");
 			for (const name of names) {
-				const signal = signalDB.getSignal(name);
+				const signal = getSignal(name);
 				if (response == null) {
 					if (signal != null) {
 						response = signal.physicalValue;
@@ -87,7 +87,7 @@ module.exports.start = () => {
 			for (let i = 0; i < names.length; i += 2) {
 				const name = names[i];
 				const value = names[i + 1];
-				const signal = signalDB.setSignal(name, value);
+				const signal = setSignal(name, value);
 				if (response == null) {
 					if (signal != null) {
 						response = signal.physicalValue;
@@ -175,7 +175,7 @@ function uds_ipc() {
 function getSignalDef(name, signalDB) {
 	var result = null;
 
-	const sigObj = signalDB.getSignal(name);
+	const sigObj = getSignal(name);
 	if (sigObj != null) {
 		result = "\n";
 		result += "name:       \"" + decorateText(sigObj.name, ColorType.Blue_Color, Bold_Style) + "\"\n";
@@ -193,7 +193,7 @@ function getSignalDef(name, signalDB) {
 		result += "max:        " + sigObj.max + "\n";
 		result += "type:       \"" + decorateText(sigObj.apType, ColorType.Blue_Color, Bold_Style) + "\"\n";
 		
-		canMessageStorage = signalDB.getCanMessageStorage();
+		canMessageStorage = getCanMessageStorage();
 		const msgObj = canMessageStorage.pduIdMap.get(Number(sigObj.canId));
 		result += "sender:     " + decorateText(msgObj.sender, ColorType.Green_Color, Bold_Style) + "\n";
 		result += "receivers:\n";
@@ -215,7 +215,7 @@ function getSignalDef(name, signalDB) {
 function getMessageDef(canId, signalDB) {
 	var result = null;
 
-	canMessageStorage = signalDB.getCanMessageStorage();
+	canMessageStorage = getCanMessageStorage();
 	const msgObj = canMessageStorage.pduIdMap.get(Number(canId));
 
 	if (msgObj != null) {
@@ -242,15 +242,15 @@ function getMessageDef(canId, signalDB) {
 }
 
 function decorateText(txt, color, style) {
-	return "\033[" + color + ";" + style + "m" + txt + "\033[0m";
+	return "\x1b[" + color + ";" + style + "m" + txt + "\x1b[0m";
 }
 
 function decorateValue(value, color, style) {
-	return "\033[" + color + ";" + style + "m" + value + "\033[0m";
+	return "\x1b[" + color + ";" + style + "m" + value + "\x1b[0m";
 }
 
 function decorateCanId(canId, color, style) {
-	return "\033[" + color + ";" + style + "m" + formatCanId(canId.toString(16)) + "\033[0m";
+	return "\x1b[" + color + ";" + style + "m" + formatCanId(canId.toString(16)) + "\x1b[0m";
 }
 
 function formatCanId(str) {

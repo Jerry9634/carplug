@@ -1,37 +1,47 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import createError from 'http-errors';
+import express, { json, urlencoded, static as _static } from 'express';
+import { join } from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 
-const { createServer } = require('http');
-const { getIO, initIO } = require('./socketWebRTC');
-const { initVehicleSocketIO } = require('./socketIO');
+import path from 'path'; // CommonJS to ES
+import dotenv from 'dotenv'; // CommonJS to ES
 
-const { indexRouter, setTitle } = require('./routes/index');
-var usersRouter = require('./routes/users');
+import cors from 'cors'; // fix cors error 
+import { createServer } from 'http';
 
-var app = express();
+import { indexRouter, setTitle } from './routes/index.js';
+import usersRouter from './routes/users.js';
+
+import { GATEWAY, DASHBOARD } from "./carplug_core/options.js";
+
+import { start as ccu_simulator_start } from "./carplug_core/ccu_simulator.js";
+import { start as auto_sync_com_start } from "./carplug_core/auto_sync_com.js";
+//import { start as ups_ipc_start } from "./carplug_core/uds_ipc.js";
+
+import { getIO, initIO } from './socketWebRTC.js';
+import { initVehicleSocketIO } from './socketIO.js';
+
+
+const app = express();
 
 // fix cors error 
 // NOTE: Jerry did this.
-const cors = require('cors');
 app.use(cors());
 app.options('*', cors());
-//app.get('/', (req, res) => {
-//	res.send('Hello, World!');
-//});
 // end of cors
 
+const __dirname = path.resolve();  // CommonJS to ES
+
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(_static(join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -53,9 +63,8 @@ app.use(function(err, req, res, next) {
 });
 
 
-const { GATEWAY, DASHBOARD } = require("./carplug_core/options");
 
-require('dotenv').config();
+dotenv.config();
 
 const settings = {
 	serverLoc  : DASHBOARD,
@@ -86,19 +95,16 @@ if (args.length != 0) {
 
 if (settings.serverLoc === GATEWAY) {
 	setTitle("CarPlug Server on Gateway (CCU)");
-	const ccu_simulator = require("./carplug_core/ccu_simulator");
-	ccu_simulator.start(settings);
+	ccu_simulator_start(settings);
 
 	// To be run on Android, disable this.
 	//setTimeout(() => {
-	//	const uds_ipc = require("./carplug_core/uds_ipc");
-	//	uds_ipc.start();
+	//	ups_ipc_start();
 	//}, 1000);
 }
 else {
 	setTitle("CarPlug Server on Dashboard");
-	const auto_sync_com = require("./carplug_core/auto_sync_com");
-	auto_sync_com.start(settings);
+	auto_sync_com_start(settings);
 
 	// Socket IO server
 	const socketIOServer = createServer(app);
@@ -116,4 +122,4 @@ else {
 	getIO();
 }
 
-module.exports = app;
+export default app;

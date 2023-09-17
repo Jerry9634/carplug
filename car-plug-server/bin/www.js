@@ -4,30 +4,21 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('car-plug-server:server');
-var http = require('http');
+import app from '../app.js';
+import debug from 'debug';
+import { createServer } from 'http';
+
+debug('car-plug-server:server');
 
 /**
  * Get port from environment and store in Express.
  */
 var port = normalizePort(process.env.HTTP_PORT);
-const args = process.argv.slice(2);
-
-if (args.length != 0) {
-	const serverLoc = args[0].toLowerCase();
-	if (serverLoc == "gw" || serverLoc == "ccu" || serverLoc == "gateway") {
-		port = "5002";
-	}
-}
-
-app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-
-var server = http.createServer(app);
+var server = createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.

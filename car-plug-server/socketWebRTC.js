@@ -1,7 +1,8 @@
-const { Server } = require("socket.io");
-let IO;
+import { Server } from "socket.io";
 
-module.exports.initIO = (httpServer) => {
+var IO;
+
+export function initIO(httpServer) {
   IO = new Server(httpServer);
 
   IO.use((socket, next) => {
@@ -48,12 +49,12 @@ module.exports.initIO = (httpServer) => {
       });
     });
   });
-};
+}
 
-module.exports.getIO = () => {
+export function getIO() {
   if (!IO) {
     throw Error("IO not initilized.");
   } else {
     return IO;
   }
-};
+}

@@ -1,26 +1,21 @@
 /*
  * ccu_simulator
  */
+import { createSocket } from 'node:dgram';
+import { Buffer } from 'node:buffer';
 
-const {
-	GATEWAY,
-	
-	BUFLEN,
-	SYNC_MESSAGE_LEN_MIN,
-	
-	TIME_BASE,
-	SYNC_PERIOD_TICKS,
-	ALIVE_TIMEOUT,
+import { 
+	GATEWAY, 
+	BUFLEN, SYNC_MESSAGE_LEN_MIN, 
+	TIME_BASE, SYNC_PERIOD_TICKS, ALIVE_TIMEOUT, 
+	CAN_MSG_STATUS_E2E_PROFILE_05, CAN_MSG_STATUS_E2E_PROFILE_11 
+} from './options.js';
 
-	//CAN_MSG_STATUS_UPDATED,
-	//CAN_MSG_STATUS_CHANGED,
-	//CAN_MSG_STATUS_OVERWRITE,
-	//CAN_MSG_STATUS_NEVER_SENT,
-	//CAN_MSG_STATUS_NEVER_RECEIVED,
-	CAN_MSG_STATUS_E2E_PROFILE_05,
-	CAN_MSG_STATUS_E2E_PROFILE_11,
-	//CAN_MSG_STATUS_CLEAR_FLAGS
-} = require('./options');
+import { getCanMessageStorage, initSignalDB, rawToPhys, setSignal } from './signal_db.js';
+import { setNeverSent, syncStorage, scanStorage } from './auto_sync.js';
+
+
+const udpServer = createSocket('udp4');
 
 const settings = {
 	serverLoc  : GATEWAY,
@@ -29,14 +24,7 @@ const settings = {
 	trafficGen : false
 };
 
-const signalDB = require('./signal_db');
-const autoSync = require('./auto_sync');
-
-const canMessageStorage = signalDB.getCanMessageStorage();
-
-const dgram = require('node:dgram');
-const { Buffer } = require('node:buffer');
-const udpServer = dgram.createSocket('udp4');
+const canMessageStorage = getCanMessageStorage();
 
 var aliveCounter = 0;
 var otherAlive = false;
@@ -53,7 +41,7 @@ function heartBeat() {
 			if (aliveCounter == 0) {
 				otherAlive = false;
 				console.log("CarPlug disconnected!");
-				autoSync.setNeverSent();
+				setNeverSent();
 			}
 		}
 	}, SYNC_PERIOD_TICKS * TIME_BASE);
@@ -75,7 +63,7 @@ function fromOther() {
 			}
 
 			if (msg.length >= SYNC_MESSAGE_LEN_MIN) {
-				autoSync.syncStorage(msg);
+				syncStorage(msg);
 				//autoSync.printLog(msg);
 			}
 			else {
@@ -90,7 +78,7 @@ function fromOther() {
 	});
 }
 
-module.exports.start = (arg) => {
+export function start(arg) {
 	const tx_buf = {
 		buf: Buffer.alloc(BUFLEN),
 		len: 0,
@@ -101,7 +89,7 @@ module.exports.start = (arg) => {
 	settings.serverPort = arg.serverPort;
 	settings.clientPort = arg.clientPort;
 	settings.trafficGen = arg.trafficGen;
-	signalDB.initSignalDB(settings.serverLoc);
+	initSignalDB(settings.serverLoc);
 	
 	udpServer.on('error', (err) => {
 		console.error(`server error:\n${err.stack}`);
@@ -125,7 +113,7 @@ module.exports.start = (arg) => {
 			if (settings.trafficGen == true) {
 				updateBus();
 			}
-			autoSync.scanStorage(tx_buf);
+			scanStorage(tx_buf);
 		}
 		
 		tx_buf.iteration++;
@@ -199,8 +187,8 @@ function updateBus() {
 								value = 0;
 							}
 							
-							const physVal = signalDB.rawToPhys(value, signal);
-							signalDB.setSignal(signal.name, physVal);
+							const physVal = rawToPhys(value, signal);
+							setSignal(signal.name, physVal);
 						}
 						else {
 							let max = 0xFFFFFFFFFFFFFFFFn;
@@ -221,7 +209,7 @@ function updateBus() {
 								bigValue = 0n;
 							}
 							
-							signalDB.setSignal(signal.name, bigValue.toString());
+							setSignal(signal.name, bigValue.toString());
 						}
 					}
 				}

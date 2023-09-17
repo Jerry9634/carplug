@@ -1,11 +1,11 @@
-const { Server } = require("socket.io");
-const signalDB = require('./carplug_core/signal_db');
-const { extraDataSet } = require("./ExtraDataSet");
+import { Server } from "socket.io";
+import { setSignal, getSignal } from './carplug_core/signal_db.js';
+import { extraDataSet } from "./ExtraDataSet.js";
 
 const subscribedChannels = new Map();
 const subscribedExtDataChannels = new Map();
 
-module.exports.initVehicleSocketIO = (httpServer) => {
+export function initVehicleSocketIO(httpServer) {
     const IO = new Server(httpServer, { cors: { origin: "*" } });
 
     IO.on('connection', (socket) => {
@@ -16,7 +16,7 @@ module.exports.initVehicleSocketIO = (httpServer) => {
                 };
 
                 for (const requestedSignal of msg.signals) {
-                    const signal = signalDB.setSignal(requestedSignal.name, requestedSignal.value);
+                    const signal = setSignal(requestedSignal.name, requestedSignal.value);
                     if (signal != null) {
                         jsonResp.signals.push({
                             name  : requestedSignal.name,
@@ -36,7 +36,7 @@ module.exports.initVehicleSocketIO = (httpServer) => {
                 };
 
                 for (const requestedSignal of msg.signals) {
-                    const signal = signalDB.getSignal(requestedSignal.name);
+                    const signal = getSignal(requestedSignal.name);
                     if (signal != null) {
                         jsonResp.signals.push({
                             name  : requestedSignal.name,
@@ -51,32 +51,22 @@ module.exports.initVehicleSocketIO = (httpServer) => {
 
         socket.on("subscribe", msg => {
             if (msg && msg.signals && msg.channel) {
-                //if (!subscribedChannels.has(msg.channel)) {
-                    const jsonResp = {
-                        signals: [],
-                        channel: msg.channel
-                    };
-                    for (const requestedSignal of msg.signals) {
-                        const signal = signalDB.getSignal(requestedSignal.name);
-                        if (signal != null) {
-                            //if (!subscribedSignals.has(requestedSignal.name)) {
-                            //    subscribedSignals.set(requestedSignal.name, {
-                            //        name  : signal.name,
-                            //        value : signal.physicalValue
-                            //    });
-                            //}
-                            //requestedSignal.value = signal.physicalValue;
-
-                            jsonResp.signals.push({
-                                name  : signal.name,
-                                value : signal.physicalValue
-                            });
-                        }
+                const jsonResp = {
+                    signals: [],
+                    channel: msg.channel
+                };
+                for (const requestedSignal of msg.signals) {
+                    const signal = getSignal(requestedSignal.name);
+                    if (signal != null) {
+                        jsonResp.signals.push({
+                            name: signal.name,
+                            value: signal.physicalValue
+                        });
                     }
+                }
 
-                    subscribedChannels.set(msg.channel, jsonResp.signals);
-                    IO.emit("notify/" + msg.channel, jsonResp);
-                //}
+                subscribedChannels.set(msg.channel, jsonResp.signals);
+                IO.emit("notify/" + msg.channel, jsonResp);
             }
         });
 
@@ -126,7 +116,7 @@ module.exports.initVehicleSocketIO = (httpServer) => {
 
             const signalsInChannel = subscribedChannels.get(key);
             for (const signalInChannel of signalsInChannel) {
-                const signal = signalDB.getSignal(signalInChannel.name);
+                const signal = getSignal(signalInChannel.name);
                 if (signal != null) {
                    if (signal.physicalValue !== signalInChannel.value) {
                         signalInChannel.value = signal.physicalValue;
@@ -151,4 +141,4 @@ module.exports.initVehicleSocketIO = (httpServer) => {
             }
         }
     }, 100);
-};
+}

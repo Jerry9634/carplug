@@ -1,26 +1,15 @@
-const {
-	TIME_BASE,
+import { 
+	TIME_BASE, 
+	CAN_MSG_STATUS_CHANGED, CAN_MSG_STATUS_OVERWRITE, CAN_MSG_STATUS_NEVER_SENT, CAN_MSG_STATUS_CLEAR_FLAGS
+} from './options.js';
 
-	//CAN_MSG_STATUS_UPDATED,
-	CAN_MSG_STATUS_CHANGED,
-	CAN_MSG_STATUS_OVERWRITE,
-	CAN_MSG_STATUS_NEVER_SENT,
-	//CAN_MSG_STATUS_NEVER_RECEIVED,
-	//CAN_MSG_STATUS_E2E_PROFILE_05,
-	//CAN_MSG_STATUS_E2E_PROFILE_11,
-	CAN_MSG_STATUS_CLEAR_FLAGS
-} = require('./options');
+import { getCanMessageStorage, extractSignal } from './signal_db.js';
 
-const {
-	getCanMessageStorage,	
-	extractSignal,
-	insertSignal
-} = require('./signal_db');
 
 const canMessageStorage = getCanMessageStorage();
 
 
-function scanStorage(buf) {
+export function scanStorage(buf) {
 	var index = buf.len;
 	canMessageStorage.canMsgGroups.forEach((canMsgGroup) => {
 		let timeoutOccurs = false;
@@ -70,7 +59,7 @@ function scanStorage(buf) {
 	buf.len = index;
 }
 
-function syncStorage(buf) {
+export function syncStorage(buf) {
 	const len = buf.length;
 	var index = 0;
 	
@@ -108,7 +97,7 @@ function syncStorage(buf) {
 	}
 }
 
-function setNeverSent() {
+export function setNeverSent() {
 	canMessageStorage.canMsgGroups.forEach((canMsgGroup) => {
 		for (const canMessage of canMsgGroup.canMessages) {
 			canMessage.status |= CAN_MSG_STATUS_NEVER_SENT;
@@ -116,7 +105,7 @@ function setNeverSent() {
 	});
 }
 
-function printLog(buf) {
+export function printLog(buf) {
 	const len = buf.length;
 	var index = 0;
 	var messageCnt = 0;
@@ -138,11 +127,11 @@ function printLog(buf) {
 
 	canMessageStorage.totalMessageCnt += messageCnt;
 
-	console.log("\033[35;1m-------------------------------------------------------------------------");
+	console.log("\x1b[35;1m-------------------------------------------------------------------------");
 	console.log("Now " + len + " bytes exchanged");
 	console.log("Now " + messageCnt + " messages exchanged");
 	console.log("Total " + canMessageStorage.totalMessageCnt + " messages exchanged");
-	console.log("-------------------------------------------------------------------------\033[0m");
+	console.log("-------------------------------------------------------------------------\x1b[0m");
 }
 
 function formatCanId(str) {
@@ -162,9 +151,9 @@ function formatByte(str) {
 	return str;
 }
 
-module.exports = {
-	scanStorage,
-	syncStorage,
-	printLog,
-	setNeverSent
-}
+// export default {
+// 	scanStorage,
+// 	syncStorage,
+// 	printLog,
+// 	setNeverSent
+// }

@@ -1,22 +1,13 @@
-const {
-	GATEWAY,
-	TIME_BASE,
+import { readFile } from 'fs';
 
-	CAN_DIRECTION_TX,
-	CAN_DIRECTION_RX,
-	
-	DATA_BYTE_LEN_MAX,
+import {
+	GATEWAY, TIME_BASE, 
+	CAN_DIRECTION_TX, CAN_DIRECTION_RX, DATA_BYTE_LEN_MAX, 
+	CAN_MSG_STATUS_UPDATED, CAN_MSG_STATUS_CHANGED, 
+	CAN_MSG_STATUS_NEVER_SENT, CAN_MSG_STATUS_NEVER_RECEIVED, 
+	CAN_MSG_STATUS_E2E_PROFILE_05, CAN_MSG_STATUS_E2E_PROFILE_11 } 
+from './options.js';
 
-	CAN_MSG_STATUS_UPDATED,
-	CAN_MSG_STATUS_CHANGED,
-	//CAN_MSG_STATUS_OVERWRITE,
-	CAN_MSG_STATUS_NEVER_SENT,
-	CAN_MSG_STATUS_NEVER_RECEIVED,
-	CAN_MSG_STATUS_E2E_PROFILE_05,
-	CAN_MSG_STATUS_E2E_PROFILE_11
-} = require('./options');
-
-var fs = require('fs');
 
 const E_SIGNAL_OK                 = 0x01;
 const E_SIGNAL_DEFINITION_INVALID = 0x02;
@@ -31,7 +22,7 @@ const signalMap = new Map();
 const txCanMessageGroups = new Map();
 const rxCanMessageGroups = new Map();
 
-const { Buffer } = require('node:buffer');
+import { Buffer } from 'node:buffer';
 
 const canMessageStorage = {
 	canMsgGroups : txCanMessageGroups,
@@ -40,8 +31,8 @@ const canMessageStorage = {
 };
 
 
-function initSignalDB(serverLoc) {
-	fs.readFile('SignalDB.json', function(err, data) {
+export function initSignalDB(serverLoc) {
+	readFile('SignalDB.json', function(err, data) {
 		const jsonData = JSON.parse(data);
 
 		jsonData.pdus.forEach((pdu) => {
@@ -85,7 +76,7 @@ function initSignalDB(serverLoc) {
 	});
 }
 
-function getCanMessageStorage() {
+export function getCanMessageStorage() {
 	return canMessageStorage;
 }
 
@@ -153,23 +144,23 @@ function addCanMessageObject(pdu, serverLoc) {
 	canMsgGroup.canMessages.push(pdu);
 }
 
-function getBusNum() {
+export function getBusNum() {
 	return busMap.size;
 }
 
-function getEcuNum() {
+export function getEcuNum() {
 	return ecuMap.size;
 }
 
-function getPduNum() {
+export function getPduNum() {
 	return pduMap.size;
 }
 
-function getSignalNum() {
+export function getSignalNum() {
 	return signalMap.size;
 }
 
-function extractSignal(msg, signal) {
+export function extractSignal(msg, signal) {
 	const startBitOffset = signal.startBit % 8;
 	const endBit = signal.startBit + signal.length - 1;
 	const endBitOffset = endBit % 8;
@@ -258,7 +249,7 @@ function extractSignal(msg, signal) {
 //	}
 }
 
-function insertSignal(msg, signal) {
+export function insertSignal(msg, signal) {
 	const startBitOffset = signal.startBit % 8;
 	const endBit = signal.startBit + signal.length - 1;
 	const endBitOffset = endBit % 8;
@@ -371,11 +362,11 @@ function insertSignal(msg, signal) {
 //	}
 }
 
-function getSignal(name) {
+export function getSignal(name) {
 	return signalMap.get(name);
 }
 
-function setSignal(name, value) {
+export function setSignal(name, value) {
 	const signal = signalMap.get(name);
 	
 	if (signal != null) {
@@ -428,7 +419,7 @@ function physToRaw(physVal, signal) {
 	return rawVal;
 }
 
-function rawToPhys(rawVal, signal) {
+export function rawToPhys(rawVal, signal) {
 	let physVal = rawVal;
 	if (signal.factor > 0) {
 		physVal *= signal.factor;
@@ -438,20 +429,4 @@ function rawToPhys(rawVal, signal) {
 		}
 	}
 	return physVal;
-}
-
-module.exports = {	
-	initSignalDB,
-	getCanMessageStorage,
-	
-	getBusNum,
-	getEcuNum,
-	getPduNum,
-	getSignalNum,
-	getSignal,
-	setSignal,
-	
-	extractSignal,
-	insertSignal,
-	rawToPhys
 }

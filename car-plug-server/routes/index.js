@@ -1,12 +1,17 @@
-var express = require('express');
-var router = express.Router();
-const indexRouter = router;
+import express from 'express';
 
-const signalDB = require('../carplug_core/signal_db');
+import { 
+	getBusNum, getEcuNum, getPduNum, getSignalNum,
+	getSignal, setSignal
+} from '../carplug_core/signal_db.js';
+import { extraDataSet } from "../ExtraDataSet.js";
+
+var router = express.Router();
+export const indexRouter = router;
 
 var title = "CarPlug Server";
 
-function setTitle(newTitle) {
+export function setTitle(newTitle) {
 	title = newTitle;
 }
 
@@ -14,10 +19,10 @@ function setTitle(newTitle) {
 router.get('/', function(req, res, next) {
 	res.render('index', {
 		title: title,
-		numberOfBus: signalDB.getBusNum(),
-		numberOfECU: signalDB.getEcuNum(),
-		numberOfPDU: signalDB.getPduNum(),
-		numberOfSignal: signalDB.getSignalNum(),
+		numberOfBus: getBusNum(),
+		numberOfECU: getEcuNum(),
+		numberOfPDU: getPduNum(),
+		numberOfSignal: getSignalNum(),
 	});
 });
 	
@@ -32,7 +37,7 @@ router.post('/carplug/get', function(req, res) {
 	};
 	
 	for (const requestedSignal of requestedSignals) {
-		const signal = signalDB.getSignal(requestedSignal.name);
+		const signal = getSignal(requestedSignal.name);
 		if (signal != null) {
 			jsonResp.signals.push({
 				name  : requestedSignal.name,
@@ -55,7 +60,7 @@ router.post('/carplug/set', function(req, res) {
 	};
 	
 	for (const requestedSignal of requestedSignals) {
-		const signal = signalDB.setSignal(requestedSignal.name, requestedSignal.value);
+		const signal = setSignal(requestedSignal.name, requestedSignal.value);
 		if (signal != null) {
 			jsonResp.signals.push({
 				name  : requestedSignal.name,
@@ -112,14 +117,9 @@ router.post('/carplug/phone/connect', function(req, res) {
 	}
 });
 
-const { extraDataSet } = require("../ExtraDataSet");
-
 router.post('/carplug/ext/set', function(req, res) {
 	const json = req.body;
 	if (json != null) {
-		//extraDataSet.time = json.time;
-		//extraDataSet.latitude = json.latitude;
-		//extraDataSet.longitude = json.longitude;
 		Object.keys(json).map((key) => {
 			extraDataSet[key] = json[key];
 		});
@@ -130,5 +130,3 @@ router.post('/carplug/ext/set', function(req, res) {
 router.get('/carplug/ext/get', function(req, res) {
 	res.status(200).json(extraDataSet);
 });
-
-module.exports = { indexRouter, setTitle };

@@ -1,17 +1,20 @@
 /*
  * auto_sync_com
  */
+import { createSocket } from 'node:dgram';
+import { Buffer } from 'node:buffer';
 
-const {
-	DASHBOARD,
-	
-	BUFLEN,
-	SYNC_MESSAGE_LEN_MIN,
-	
-	TIME_BASE,
-	SYNC_PERIOD_TICKS,
-	ALIVE_TIMEOUT
-} = require('./options');
+import { 
+	DASHBOARD, 
+	BUFLEN, SYNC_MESSAGE_LEN_MIN, 
+	TIME_BASE, SYNC_PERIOD_TICKS, ALIVE_TIMEOUT 
+} from './options.js';
+
+import { initSignalDB } from './signal_db.js';
+import { setNeverSent, syncStorage, scanStorage } from './auto_sync.js';
+
+
+const udpClient = createSocket('udp4');
 
 const settings = {
 	serverLoc : DASHBOARD,
@@ -19,13 +22,6 @@ const settings = {
 	serverPort : 0,
 	clientPort : 0
 };
-
-const signalDB = require('./signal_db');
-const autoSync = require('./auto_sync');
-
-const dgram = require('node:dgram');
-const { Buffer } = require('node:buffer');
-const udpClient = dgram.createSocket('udp4');
 
 var aliveCounter = 0;
 var otherAlive = false;
@@ -58,7 +54,7 @@ function heartBeat() {
 			if (aliveCounter == 0) {
 				otherAlive = false;
 				console.log("CarPlug disconnected!");
-				autoSync.setNeverSent();
+				setNeverSent();
 			}
 		}
 	}, SYNC_PERIOD_TICKS * TIME_BASE);
@@ -77,7 +73,7 @@ function fromOther() {
 			}
 
 			if (msg.length >= SYNC_MESSAGE_LEN_MIN) {
-				autoSync.syncStorage(msg);
+				syncStorage(msg);
 				//autoSync.printLog(msg);
 			}
 			else {
@@ -95,7 +91,7 @@ function fromOther() {
 	});
 }
 
-module.exports.start = (arg) => {
+export const start = (arg) => {
 	const tx_buf = {
 		buf: Buffer.alloc(BUFLEN),
 		len: 0,
@@ -106,7 +102,7 @@ module.exports.start = (arg) => {
 	settings.serverAddr = arg.serverAddr;
 	settings.serverPort = arg.serverPort;
 	settings.clientPort = arg.clientPort;
-	signalDB.initSignalDB(settings.serverLoc);
+	initSignalDB(settings.serverLoc);
 	
 	udpClient.on('error', (err) => {
 		console.error(`server error:\n${err.stack}`);
@@ -127,7 +123,7 @@ module.exports.start = (arg) => {
 	
 	setInterval(function() {
 		if (otherAlive) {
-			autoSync.scanStorage(tx_buf);
+			scanStorage(tx_buf);
 		}
 		
 		tx_buf.iteration++;
