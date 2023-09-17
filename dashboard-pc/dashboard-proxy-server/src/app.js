@@ -1,19 +1,22 @@
-const express = require('express');
-const morgan = require('morgan');
-const helmet = require('helmet');
-const cors = require('cors');
+import express, { json } from 'express';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import cors from 'cors';
 
-require('dotenv').config();
+import fetch from 'node-fetch';
+import { createSocket } from 'node:dgram';
+import { Buffer } from 'node:buffer';
+import dotenv from 'dotenv';
 
-const middlewares = require('./middlewares');
-//const api = require('./api');
+import { notFound, errorHandler } from './middlewares.js';
+
 
 const app = express();
 
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
-app.use(express.json());
+app.use(json());
 
 app.get('/', (req, res) => {
   res.json({
@@ -42,7 +45,6 @@ app.get('/*.pls', async (req, res) => {
   });
 });
 
-const fetch = require('node-fetch');
 
 const searchRadioStations = async (url, callback) => {
   var newURL = String(url).replace("/kor-radio", "https://www.spectrummap.kr");
@@ -78,18 +80,16 @@ const searchRadioStreamingURLs = async (url, callback) => {
   });
 }
 
-//app.use('/api/v1', api);
+app.use(notFound);
+app.use(errorHandler);
 
-app.use(middlewares.notFound);
-app.use(middlewares.errorHandler);
+dotenv.config();
 
-const dgram = require('node:dgram');
-const { Buffer } = require('node:buffer');
-const udpClient = dgram.createSocket('udp4');
+const udpClient = createSocket('udp4');
 
 var serverAddress = null;
 
-function findServerIP() {
+export function findServerIP() {
   const message = Buffer.from("Knock!");
 
   udpClient.on('error', (err) => {
@@ -119,12 +119,8 @@ function findServerIP() {
   });
 }
 
-function getServerIP() {
+export function getServerIP() {
   return serverAddress;
 }
 
-module.exports = {
-  app,
-  findServerIP,
-  getServerIP
-};
+export default app;

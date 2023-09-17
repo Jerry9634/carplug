@@ -1,9 +1,4 @@
-//const app = require("./app");
-//const findServer = require("./app");
-const {
-  app,
-  findServerIP
-} = require("./app");
+import app, { findServerIP } from("./app.js");
 
 const port = process.env.PROXY_SERVER_PORT;
 app.listen(port, () => {
