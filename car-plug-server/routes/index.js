@@ -4,7 +4,7 @@ import {
 	getBusNum, getEcuNum, getPduNum, getSignalNum,
 	getSignal, setSignal
 } from '../carplug_core/signal_db.js';
-import { extraDataSet } from "../carplug_ext/ExtraDataSet.js";
+import { extraDataSet, extraDataMap } from "../carplug_ext/ExtraDataSet.js";
 
 var router = express.Router();
 export const indexRouter = router;
@@ -119,10 +119,13 @@ router.post('/carplug/phone/connect', function(req, res) {
 
 router.post('/carplug/ext/set', function(req, res) {
 	const json = req.body;
-	if (json != null) {
-		Object.keys(json).map((key) => {
-			extraDataSet[key] = json[key];
-		});
+	if (json != null && json.signals) {
+		for (const signal of json.signals) {
+			const extData = extraDataMap.get(signal.name);
+			if (extData) {
+				extData.value = signal.value;
+			}
+		}
 		res.status(200).json(extraDataSet);
 	}
 });
