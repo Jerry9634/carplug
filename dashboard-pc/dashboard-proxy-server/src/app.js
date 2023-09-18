@@ -34,16 +34,6 @@ function app_start() {
     });
   });
   
-  app.get('/kor-radio/openapi.do?', async (req, res) => {
-    searchRadioStations(req.url, (error, data) => {
-      if (error) {
-        res.send(error);
-      } else {
-        res.send(data);
-      }
-    });
-  });
-  
   app.get('/*.pls', async (req, res) => {
     searchRadioStreamingURLs(req.url, (error, data) => {
       if (error) {
@@ -93,19 +83,6 @@ function findServerIP() {
       //console.log(rinfo.address);
       serverAddress = rinfo.address;
     }
-  });
-}
-
-const searchRadioStations = async (url, callback) => {
-  var newURL = String(url).replace("/kor-radio", "https://www.spectrummap.kr");
-  //console.log(newURL);
-  await fetch(newURL,{method: 'GET'})
-    .then((res)=>res.text())
-    .then((data)=>{ 
-      callback(undefined, data);
-    })
-    .catch((error) => {
-    callback(error);
   });
 }
 
