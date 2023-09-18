@@ -18,142 +18,119 @@ export function initVehicleSocketIO(httpServer) {
 
     IO.on('connection', (socket) => {
         socket.on("set", msg => {
-            if (msg && msg.signals) {
-                const jsonResp = {
-                    signals: [],
-                };
-
-                for (const requestedSignal of msg.signals) {
-                    const signal = setSignal(requestedSignal.name, requestedSignal.value);
-                    if (signal != null) {
-                        jsonResp.signals.push({
-                            name  : requestedSignal.name,
-                            value : signal.physicalValue
-                        });
-                    }
-                }
-
-                IO.emit("set", jsonResp);
-            }
-        });
-
-        socket.on("get", msg => {
-            if (msg && msg.signals) {
-                const jsonResp = {
-                    signals: [],
-                };
-
-                for (const requestedSignal of msg.signals) {
-                    const signal = getSignal(requestedSignal.name);
-                    if (signal != null) {
-                        jsonResp.signals.push({
-                            name  : requestedSignal.name,
-                            value : signal.physicalValue
-                        });
-                    }
-                }
-
-                IO.emit("get", jsonResp);
-            }
-        });
-
-        socket.on("subscribe", msg => {
-            if (msg && msg.signals && msg.channel) {
-                const jsonResp = {
-                    signals: [],
-                    channel: msg.channel
-                };
-                for (const requestedSignal of msg.signals) {
-                    const signal = getSignal(requestedSignal.name);
-                    if (signal != null) {
-                        jsonResp.signals.push({
-                            name: signal.name,
-                            value: signal.physicalValue
-                        });
-                    }
-                }
-
-                subscribedChannels.set(msg.channel, jsonResp.signals);
-                IO.emit("notify/" + msg.channel, jsonResp);
-            }
-        });
-
-        socket.on("unsubscribe", msg => {
-            if (msg && msg.channel) {
-                subscribedChannels.delete(msg.channel);
-            }
-        });
-
-        socket.on("set-ext", msg => {
-            if (msg) {
+            if (msg.type === "ext") {
                 Object.keys(msg).map((key) => {
                     extraDataSet[key] = msg[key];
                 });
 
-                IO.emit("set-ext", extraDataSet);
+                IO.emit("set", extraDataSet);
+            }
+            else {
+                if (msg.signals) {
+                    const jsonResp = {
+                        signals: [],
+                    };
+    
+                    for (const requestedSignal of msg.signals) {
+                        if (msg.type === "vss") {
+                            const signal = setVssSignal(requestedSignal.name, requestedSignal.value);
+                            if (signal != null) {
+                                jsonResp.signals.push({
+                                    name  : requestedSignal.name,
+                                    value : signal.value
+                                });
+                            }
+                        }
+                        else {
+                            const signal = setSignal(requestedSignal.name, requestedSignal.value);
+                            if (signal != null) {
+                                jsonResp.signals.push({
+                                    name  : requestedSignal.name,
+                                    value : signal.physicalValue
+                                });
+                            }
+                        }
+                    }
+    
+                    IO.emit("set", jsonResp);
+                }
             }
         });
 
-        socket.on("get-ext", msg => {
-            if (msg) {
+        socket.on("get", msg => {
+            if (msg.type === "ext") {
                 IO.emit("get-ext", extraDataSet);
             }
-        });
-
-        socket.on("subscribe-ext", msg => {
-            if (msg && msg.channel) {
-                const dataCopy = Object.assign({}, extraDataSet);
-                subscribedExtDataChannels.set(msg.channel, dataCopy);
-                IO.emit("notify-ext/" + msg.channel, extraDataSet);
-            }
-        });
-
-        socket.on("unsubscribe-ext", msg => {
-            if (msg && msg.channel) {
-                subscribedExtDataChannels.delete(msg.channel);
-            }
-        });
-
-        /*
-         * VSS API
-         */
-        socket.on("get-vss", msg => {
-            if (msg && msg.signals) {
-                const jsonResp = {
-                    signals: [],
-                };
-
-                for (const requestedSignal of msg.signals) {
-                    const signal = getVssSignal(requestedSignal.name);
-                    if (signal != null) {
-                        jsonResp.signals.push({
-                            name  : requestedSignal.name,
-                            value : signal.value
-                        });
+            else {
+                if (msg.signals) {
+                    const jsonResp = {
+                        signals: [],
+                    };
+                    for (const requestedSignal of msg.signals) {
+                        if (msg.type === "vss") {
+                            const signal = getVssSignal(requestedSignal.name);
+                            if (signal != null) {
+                                jsonResp.signals.push({
+                                    name  : requestedSignal.name,
+                                    value : signal.value
+                                });
+                            }
+                        }
+                        else {
+                            const signal = getSignal(requestedSignal.name);
+                            if (signal != null) {
+                                jsonResp.signals.push({
+                                    name  : requestedSignal.name,
+                                    value : signal.physicalValue
+                                });
+                            }
+                        }
                     }
+                    IO.emit("get", jsonResp);
                 }
-                
-                IO.emit("get-vss", jsonResp);
             }
         });
 
-        socket.on("set-vss", msg => {
-            if (msg && msg.signals) {
-                const jsonResp = {
-                    signals: [],
-                };
-
-                for (const requestedSignal of msg.signals) {
-                    const signal = setVssSignal(requestedSignal.name, requestedSignal.value);
-                    if (signal != null) {
-                        jsonResp.signals.push({
-                            name  : requestedSignal.name,
-                            value : signal.value
-                        });
-                    }
+        socket.on("subscribe", msg => {
+            if (msg.type === "ext") {
+                if (msg.channel) {
+                    const dataCopy = Object.assign({}, extraDataSet);
+                    subscribedExtDataChannels.set(msg.channel, dataCopy);
+                    IO.emit("notify/" + msg.channel, extraDataSet);
                 }
+            }
+            else {
+                if (msg.signals && msg.channel) {
+                    const jsonResp = {
+                        signals: [],
+                        channel: msg.channel
+                    };
+                    for (const requestedSignal of msg.signals) {
+                        const signal = getSignal(requestedSignal.name);
+                        if (signal != null) {
+                            jsonResp.signals.push({
+                                name: signal.name,
+                                value: signal.physicalValue
+                            });
+                        }
+                    }
+    
+                    subscribedChannels.set(msg.channel, jsonResp.signals);
+                    IO.emit("notify/" + msg.channel, jsonResp);
+                }
+            }
+        });
 
-                IO.emit("set-vss", jsonResp);
+        socket.on("unsubscribe", msg => {
+            if (msg.type === "ext") {
+                if (msg.channel) {
+                    subscribedExtDataChannels.delete(msg.channel);
+                }
+            }
+            else {
+                if (msg.channel) {
+                    subscribedChannels.delete(msg.channel);
+                }
             }
         });
     });
@@ -188,7 +165,7 @@ export function initVehicleSocketIO(httpServer) {
             if (JSON.stringify(subscribedExtDataChannels.get(key)) !== JSON.stringify(extraDataSet)) {
                 const dataCopy = Object.assign({}, extraDataSet);
                 subscribedExtDataChannels.set(key, dataCopy);
-                IO.emit("notify-ext/" + key, extraDataSet);
+                IO.emit("notify/" + key, extraDataSet);
             }
         }
     }, 100);

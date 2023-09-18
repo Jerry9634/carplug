@@ -1,12 +1,10 @@
 import { readFile } from 'fs';
-import { Buffer } from 'node:buffer';
 
 
 const signalMap = new Map();
 
 
-
-function getSubTree(node, path, name) {
+function getSubTree(node, path) {
 	const children = node['children'];
 	if (node['type'] === 'branch') {
 		Object.keys(children).forEach((key) => {
@@ -29,7 +27,7 @@ export function initVssDB() {
 		const jsonData = JSON.parse(data);
 
 		Object.keys(jsonData).forEach((key) => {
-			getSubTree(jsonData[key], key, key);
+			getSubTree(jsonData[key], key);
 		});
 	});
 }
