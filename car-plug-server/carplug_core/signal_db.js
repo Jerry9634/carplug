@@ -31,7 +31,7 @@ const canMessageStorage = {
 
 
 export function initSignalDB(serverLoc) {
-	readFile('SignalDB.json', function(err, data) {
+	readFile('./carplug_core/SignalDB.json', function(err, data) {
 		const jsonData = JSON.parse(data);
 
 		jsonData.pdus.forEach((pdu) => {

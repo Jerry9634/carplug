@@ -22,8 +22,8 @@ import {
 	start_client as ups_ipc_start_client
 } from "./carplug_core/uds_ipc.js";
 
-import { getIO, initIO } from "./socketWebRTC.js";
-import { initVehicleSocketIO } from "./socketIO.js";
+import { getIO, initIO } from "./carplug_ext/socketWebRTC.js";
+import { initVehicleSocketIO } from "./carplug_ext/socketIO.js";
 
 
 const app = express();
