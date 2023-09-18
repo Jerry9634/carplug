@@ -9,10 +9,10 @@ import {
 	BUFLEN, SYNC_MESSAGE_LEN_MIN, 
 	TIME_BASE, SYNC_PERIOD_TICKS, ALIVE_TIMEOUT, 
 	CAN_MSG_STATUS_E2E_PROFILE_05, CAN_MSG_STATUS_E2E_PROFILE_11 
-} from './options.js';
+} from "./options.js";
 
-import { getCanMessageStorage, initSignalDB, rawToPhys, setSignal } from './signal_db.js';
-import { setNeverSent, syncStorage, scanStorage } from './auto_sync.js';
+import { getCanMessageStorage, initSignalDB, rawToPhys, setSignal } from "./signal_db.js";
+import { setNeverSent, syncStorage, scanStorage } from "./auto_sync.js";
 
 
 const udpServer = createSocket('udp4');

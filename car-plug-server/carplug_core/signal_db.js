@@ -1,4 +1,5 @@
 import { readFile } from 'fs';
+import { Buffer } from 'node:buffer';
 
 import {
 	GATEWAY, TIME_BASE, 
@@ -6,7 +7,7 @@ import {
 	CAN_MSG_STATUS_UPDATED, CAN_MSG_STATUS_CHANGED, 
 	CAN_MSG_STATUS_NEVER_SENT, CAN_MSG_STATUS_NEVER_RECEIVED, 
 	CAN_MSG_STATUS_E2E_PROFILE_05, CAN_MSG_STATUS_E2E_PROFILE_11 } 
-from './options.js';
+from "./options.js";
 
 
 const E_SIGNAL_OK                 = 0x01;
@@ -21,8 +22,6 @@ const signalMap = new Map();
 
 const txCanMessageGroups = new Map();
 const rxCanMessageGroups = new Map();
-
-import { Buffer } from 'node:buffer';
 
 const canMessageStorage = {
 	canMsgGroups : txCanMessageGroups,

@@ -8,10 +8,10 @@ import {
 	DASHBOARD, 
 	BUFLEN, SYNC_MESSAGE_LEN_MIN, 
 	TIME_BASE, SYNC_PERIOD_TICKS, ALIVE_TIMEOUT 
-} from './options.js';
+} from "./options.js";
 
-import { initSignalDB } from './signal_db.js';
-import { setNeverSent, syncStorage, scanStorage } from './auto_sync.js';
+import { initSignalDB } from "./signal_db.js";
+import { setNeverSent, syncStorage, scanStorage } from "./auto_sync.js";
 
 
 const udpClient = createSocket('udp4');
@@ -25,7 +25,6 @@ const settings = {
 
 var aliveCounter = 0;
 var otherAlive = false;
-//var address = null;
 
 
 function heartBeat() {

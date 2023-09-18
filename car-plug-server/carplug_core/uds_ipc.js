@@ -7,6 +7,7 @@ import {
 	getEnvironmentData,
 	parentPort
 } from 'node:worker_threads';
+import fs from 'fs';
 
 import { getSignal, setSignal, getCanMessageStorage } from "./signal_db.js";
 
@@ -17,9 +18,6 @@ const SOCKET_NAME_WIN = "\\\\.\\pipe\\carplug.socket";
 const settings = {
 	socketName: SOCKET_NAME
 };
-
-
-uds_ipc();
 
 const ColorType = {
 	Default_Color    : 30,	//	\033[30m	\033[40m
@@ -35,7 +33,7 @@ const ColorType = {
 const Bold_Style = 1;
 
 
-export function start() {
+export function start_server() {
 	if (!isMainThread)
 		return;
 		
@@ -130,13 +128,12 @@ export function start() {
 	});
 }
 
-function uds_ipc() {
+export function start_client() {
 	if (isMainThread)
 		return;
 	
 	settings.socketName = getEnvironmentData("socketName");
 
-	const fs = require('fs');
 	fs.unlink(settings.socketName, () => {
 		// nothing to do
 	});

@@ -8,43 +8,93 @@ import { createSocket } from 'node:dgram';
 import { Buffer } from 'node:buffer';
 import dotenv from 'dotenv';
 
-import { notFound, errorHandler } from './middlewares.js';
+import { notFound, errorHandler } from "./middlewares.js";
 
 
 const app = express();
 
-app.use(morgan('dev'));
-app.use(helmet());
-app.use(cors());
-app.use(json());
+const udpClient = createSocket('udp4');
 
-app.get('/', (req, res) => {
-  res.json({
-    message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
-    ip: serverAddress
+var serverAddress = null;
+
+
+function app_start() {
+  app.use(morgan('dev'));
+  app.use(helmet());
+  app.use(cors());
+  app.use(json());
+  
+  dotenv.config();
+  findServerIP();
+  
+  app.get('/', (req, res) => {
+    res.json({
+      message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
+      ip: serverAddress
+    });
   });
-});
+  
+  app.get('/kor-radio/openapi.do?', async (req, res) => {
+    searchRadioStations(req.url, (error, data) => {
+      if (error) {
+        res.send(error);
+      } else {
+        res.send(data);
+      }
+    });
+  });
+  
+  app.get('/*.pls', async (req, res) => {
+    searchRadioStreamingURLs(req.url, (error, data) => {
+      if (error) {
+        res.send(error);
+      } else {
+        res.send(data);
+      }
+    });
+  });
+  
+  app.use(notFound);
+  app.use(errorHandler);
 
-app.get('/kor-radio/openapi.do?', async (req, res) => {
-  searchRadioStations(req.url, (error, data) => {
-    if (error) {
-      res.send(error);
-    } else {
-      res.send(data);
+  const port = process.env.PROXY_SERVER_PORT;
+  app.listen(port, () => {
+    /* eslint-disable no-console */
+    console.log(`Listening: http://localhost:${port}`);
+    /* eslint-enable no-console */
+  });
+}
+
+
+function findServerIP() {
+  const message = Buffer.from("Knock!");
+
+  udpClient.on('error', (err) => {
+    console.error(`server error:\n${err.stack}`);
+    udpClient.close();
+  });
+  
+  udpClient.on('listening', () => {
+    udpClient.setBroadcast(true);
+    const address = udpClient.address();
+    console.log(`server listening ${address.address}:${address.port}`);
+  });
+  
+  udpClient.bind(process.env.FIND_SERVER_PORT);
+  
+  udpClient.send(message, process.env.AUTO_SYNC_CLIENT_PORT, "255.255.255.255", (err) => {
+    if (err != null) {
+      console.log(err);
     }
   });
-});
-
-app.get('/*.pls', async (req, res) => {
-  searchRadioStreamingURLs(req.url, (error, data) => {
-    if (error) {
-      res.send(error);
-    } else {
-      res.send(data);
+  
+  udpClient.on('message', (msg, rinfo) => {
+    if (msg.length > 0) {
+      //console.log(rinfo.address);
+      serverAddress = rinfo.address;
     }
   });
-});
-
+}
 
 const searchRadioStations = async (url, callback) => {
   var newURL = String(url).replace("/kor-radio", "https://www.spectrummap.kr");
@@ -80,47 +130,5 @@ const searchRadioStreamingURLs = async (url, callback) => {
   });
 }
 
-app.use(notFound);
-app.use(errorHandler);
 
-dotenv.config();
-
-const udpClient = createSocket('udp4');
-
-var serverAddress = null;
-
-export function findServerIP() {
-  const message = Buffer.from("Knock!");
-
-  udpClient.on('error', (err) => {
-    console.error(`server error:\n${err.stack}`);
-    udpClient.close();
-  });
-  
-  udpClient.on('listening', () => {
-    udpClient.setBroadcast(true);
-    const address = udpClient.address();
-    console.log(`server listening ${address.address}:${address.port}`);
-  });
-  
-  udpClient.bind(process.env.FIND_SERVER_PORT);
-  
-  udpClient.send(message, process.env.AUTO_SYNC_CLIENT_PORT, "255.255.255.255", (err) => {
-    if (err != null) {
-      console.log(err);
-    }
-  });
-  
-  udpClient.on('message', (msg, rinfo) => {
-    if (msg.length > 0) {
-      //console.log(rinfo.address);
-      serverAddress = rinfo.address;
-    }
-  });
-}
-
-export function getServerIP() {
-  return serverAddress;
-}
-
-export default app;
+export default app_start;

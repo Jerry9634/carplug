@@ -4,26 +4,29 @@
  * Module dependencies.
  */
 
-import app from '../app.js';
 import debug from 'debug';
 import { createServer } from 'http';
 
+import app, { app_start } from "../app.js";
+
 debug('car-plug-server:server');
+
+app_start();
+
 
 /**
  * Get port from environment and store in Express.
  */
-var port = normalizePort(process.env.HTTP_PORT);
+const port = normalizePort(process.env.HTTP_PORT);
 
 /**
  * Create HTTP server.
  */
-var server = createServer(app);
+const server = createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port);
 console.log("HTTP Server started on:", port);
 server.on('error', onError);
@@ -32,7 +35,6 @@ server.on('listening', onListening);
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -52,7 +54,6 @@ function normalizePort(val) {
 /**
  * Event listener for HTTP server "error" event.
  */
-
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -80,7 +81,6 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
-
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'

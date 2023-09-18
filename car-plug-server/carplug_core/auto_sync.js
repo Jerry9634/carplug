@@ -1,9 +1,10 @@
 import { 
 	TIME_BASE, 
-	CAN_MSG_STATUS_CHANGED, CAN_MSG_STATUS_OVERWRITE, CAN_MSG_STATUS_NEVER_SENT, CAN_MSG_STATUS_CLEAR_FLAGS
-} from './options.js';
+	CAN_MSG_STATUS_CHANGED, CAN_MSG_STATUS_OVERWRITE, 
+	CAN_MSG_STATUS_NEVER_SENT, CAN_MSG_STATUS_CLEAR_FLAGS
+} from "./options.js";
 
-import { getCanMessageStorage, extractSignal } from './signal_db.js';
+import { getCanMessageStorage, extractSignal } from "./signal_db.js";
 
 
 const canMessageStorage = getCanMessageStorage();
@@ -150,10 +151,3 @@ function formatByte(str) {
 	}
 	return str;
 }
-
-// export default {
-// 	scanStorage,
-// 	syncStorage,
-// 	printLog,
-// 	setNeverSent
-// }
