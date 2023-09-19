@@ -13,12 +13,14 @@
               "IsEngaged" : {
                 "datatype" : "boolean",
                 "description" : "Indicates if ABS is currently regulating brake pressure. True = Engaged. False = Not Engaged.",
-                "type" : "sensor"
+                "type" : "sensor",
+                "mapping" : "ABS_ActvSta"
               },
               "IsError" : {
                 "datatype" : "boolean",
                 "description" : "Indicates if ABS incurred an error condition. True = Error. False = No Error.",
-                "type" : "sensor"
+                "type" : "sensor",
+                "mapping" : "ABS_DfctvSta"
               }
             },
             "description" : "Antilock Braking System signals.",
@@ -36,12 +38,14 @@
               "IsActive" : {
                 "datatype" : "boolean",
                 "description" : "Indicates if cruise control system is active (i.e. actively controls speed). True = Active. False = Inactive.",
-                "type" : "actuator"
+                "type" : "actuator",
+                "mapping" : "VCU_CrzOnLampSta"
               },
               "IsEnabled" : {
                 "datatype" : "boolean",
                 "description" : "Indicates if cruise control system is enabled (e.g. ready to receive configurations and settings) True = Enabled. False = Disabled.",
-                "type" : "actuator"
+                "type" : "actuator",
+                "mapping" : "VCU_CrzSetLampSta"
               },
               "IsError" : {
                 "datatype" : "boolean",
@@ -52,7 +56,8 @@
                 "datatype" : "float",
                 "description" : "Set cruise control speed in kilometers per hour.",
                 "type" : "actuator",
-                "unit" : "km/h"
+                "unit" : "km/h",
+                "mapping" : "VCU_CrzSetSpdVal"
               }
             },
             "description" : "Signals from Cruise Control system.",

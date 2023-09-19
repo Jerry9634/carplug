@@ -12,6 +12,7 @@ function getSubTree(node, path) {
 		});
 	}
 	else {
+		node.name = path;
 		if (node.default) {
 			node.value = node.default;
 		}
