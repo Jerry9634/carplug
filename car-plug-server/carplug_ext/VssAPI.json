@@ -506,7 +506,8 @@
                   "IsSignaling" : {
                     "datatype" : "boolean",
                     "description" : "Indicates if light is signaling or off. True = signaling. False = Off.",
-                    "type" : "actuator"
+                    "type" : "actuator",
+                    "mapping" : "HazardCtrlReq"
                   }
                 },
                 "description" : "Hazard lights.",
@@ -1383,7 +1384,8 @@
                             "datatype" : "int8",
                             "description" : "Temperature",
                             "type" : "actuator",
-                            "unit" : "celsius"
+                            "unit" : "celsius",
+                            "mapping" : "DATC_DrvTempCDis"
                           }
                         },
                         "description" : "HVAC for single station in the vehicle",
@@ -1409,7 +1411,8 @@
                             "datatype" : "int8",
                             "description" : "Temperature",
                             "type" : "actuator",
-                            "unit" : "celsius"
+                            "unit" : "celsius",
+                            "mapping" : "DATC_PassTempCDis"
                           }
                         },
                         "description" : "HVAC for single station in the vehicle",
@@ -6504,7 +6507,8 @@
             "datatype" : "uint32",
             "description" : "Remaining range in meters using all energy sources available in the vehicle.",
             "type" : "sensor",
-            "unit" : "m"
+            "unit" : "m",
+            "mapping" : "CLU_EVDTEDisp"
           },
           "TimeRemaining" : {
             "datatype" : "uint32",
@@ -7037,7 +7041,8 @@
               "CurrentGear" : {
                 "datatype" : "int8",
                 "description" : "The current gear. 0=Neutral, 1/2/..=Forward, -1/-2/..=Reverse.",
-                "type" : "sensor"
+                "type" : "sensor",
+                "mapping" : "VCU_GearPosSta"
               },
               "DiffLockFrontEngagement" : {
                 "datatype" : "float",
@@ -7177,7 +7182,8 @@
         "datatype" : "float",
         "description" : "Vehicle speed.",
         "type" : "sensor",
-        "unit" : "km/h"
+        "unit" : "km/h",
+        "mapping" : "CLU_DisSpdVal"
       },
       "StartTime" : {
         "comment" : "This signal is supposed to be set whenever a new trip starts. A new trip is considered to start when engine gets enabled (e.g. LowVoltageSystemState in ON or START mode). A trip is considered to end when engine is no longer enabled. The default value indicates that the vehicle never has been started, or that latest start time is unknown.",
@@ -7201,7 +7207,8 @@
         "datatype" : "float",
         "description" : "Odometer reading, total distance traveled during the lifetime of the vehicle.",
         "type" : "sensor",
-        "unit" : "km"
+        "unit" : "km",
+        "mapping" : "CLU_OdoVal"
       },
       "TraveledDistanceSinceStart" : {
         "comment" : "A new trip is considered to start when engine gets enabled (e.g. LowVoltageSystemState in ON or START mode). A trip is considered to end when engine is no longer enabled. The signal may however keep the value of the last trip until a new trip is started.",
