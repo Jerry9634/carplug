@@ -13,6 +13,9 @@ import {
     getSignal as getVssSignal, 
     setSignal as setVssSignal 
 } from "./vss_db.js";
+import {
+    initConverterMap, canToVssMap, vssToCanMap
+} from "./signalConverter.js";
 
 
 const SIGNAL_TYPES = {
@@ -70,6 +73,7 @@ export function initVehicleSocketIO(httpServer) {
 
     initVssDB();
     initExtDB();
+    initConverterMap();
 
     const IO = new Server(httpServer, { cors: { origin: "*" } });
 
@@ -83,11 +87,22 @@ export function initVehicleSocketIO(httpServer) {
                 for (const signalReq of msg.signals) {
                     const signal = setSignal(signalReq);
                     if (signal != null) {
+                        const newValue = getSignalValue(signal, signalReq.type);
                         jsonResp.signals.push({
                             name  : signal.name,
-                            value : getSignalValue(signal, signalReq.type),
+                            value : newValue,
                             type  : signalReq.type
                         });
+                        if (signalReq.type === SIGNAL_TYPES.RAW) {
+                            if (canToVssMap.has(signal.name)) {
+                                (canToVssMap.get(signal.name))(newValue);
+                            }
+                        }
+                        else if (signalReq.type === SIGNAL_TYPES.VSS) {
+                            if (vssToCanMap.has(signal.name)) {
+                                (vssToCanMap.get(signal.name))(newValue);
+                            }
+                        }
                     }
                 }
 
