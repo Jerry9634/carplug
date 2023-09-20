@@ -14,34 +14,42 @@ import {
     setSignal as setVssSignal 
 } from "./vss_db.js";
 
+
+const SIGNAL_TYPES = {
+    RAW: "raw", // CAN
+    VSS: "vss", // COVESA Vehicle Signal Spec
+    EXT: "ext"  // Extended
+};
+
 const subscribedChannels = new Map();
 
-function setSignal(name, value, type) {
-    if (type === "vss") {
-        return setVssSignal(name, value);
+
+function setSignal(signal) {
+    if (signal.type === SIGNAL_TYPES.VSS) {
+        return setVssSignal(signal.name, signal.value);
     }
-    else if (type === "ext") {
-        return setExtData(name, value);
+    else if (signal.type === SIGNAL_TYPES.EXT) {
+        return setExtData(signal.name, signal.value);
     }
     else {
-        return setRawSignal(name, value);
+        return setRawSignal(signal.name, signal.value);
     }
 }
 
-function getSignal(name, type) {
-    if (type === "vss") {
-        return getVssSignal(name);
+function getSignal(signal) {
+    if (signal.type === SIGNAL_TYPES.VSS) {
+        return getVssSignal(signal.name);
     }
-    else if (type === "ext") {
-        return getExtData(name);
+    else if (signal.type === SIGNAL_TYPES.EXT) {
+        return getExtData(signal.name);
     }
     else {
-        return getRawSignal(name);
+        return getRawSignal(signal.name);
     }
 }
 
 function getSignalValue(signal, type) {
-    if (type === "raw") {
+    if (type === SIGNAL_TYPES.RAW) {
         return signal.physicalValue;
     }
     else {
@@ -50,7 +58,7 @@ function getSignalValue(signal, type) {
 }
 
 function setSignalValue(signal, value, type) {
-    if (type === "raw") {
+    if (type === SIGNAL_TYPES.RAW) {
         signal.physicalValue = value;
     }
     else {
@@ -72,12 +80,13 @@ export function initVehicleSocketIO(httpServer) {
                     signals: [],
                 };
 
-                for (const requestedSignal of msg.signals) {
-                    const signal = setSignal(requestedSignal.name, requestedSignal.value, msg.type);
+                for (const signalReq of msg.signals) {
+                    const signal = setSignal(signalReq);
                     if (signal != null) {
                         jsonResp.signals.push({
                             name  : signal.name,
-                            value : getSignalValue(signal, msg.type)
+                            value : getSignalValue(signal, signalReq.type),
+                            type  : signalReq.type
                         });
                     }
                 }
@@ -91,12 +100,13 @@ export function initVehicleSocketIO(httpServer) {
                 const jsonResp = {
                     signals: [],
                 };
-                for (const requestedSignal of msg.signals) {
-                    const signal = getSignal(requestedSignal.name, msg.type);
+                for (const signalReq of msg.signals) {
+                    const signal = getSignal(signalReq);
                     if (signal != null) {
                         jsonResp.signals.push({
                             name  : signal.name,
-                            value : getSignalValue(signal, msg.type)
+                            value : getSignalValue(signal, signalReq.type),
+                            type  : signalReq.type
                         });
                     }
                 }
@@ -111,12 +121,13 @@ export function initVehicleSocketIO(httpServer) {
                     channel: msg.channel,
                     type: msg.type
                 };
-                for (const requestedSignal of msg.signals) {
-                    const signal = getSignal(requestedSignal.name, msg.type);
+                for (const signalReq of msg.signals) {
+                    const signal = getSignal(signalReq);
                     if (signal != null) {
                         jsonResp.signals.push({
-                            name: signal.name,
-                            value: getSignalValue(signal, msg.type)
+                            name  : signal.name,
+                            value : getSignalValue(signal, signalReq.type),
+                            type  : signalReq.type
                         });
                     }
                 }
@@ -142,17 +153,18 @@ export function initVehicleSocketIO(httpServer) {
 
             const storedResponse = subscribedChannels.get(key);
             const oldSignals = storedResponse.signals;
-            const type = storedResponse.type;
             for (const oldSignal of oldSignals) {
-                const newSignal = getSignal(oldSignal.name, type);
+                const newSignal = getSignal(oldSignal);
                 if (newSignal != null) {
+                    const type = oldSignal.type;
                     const oldValue = getSignalValue(oldSignal, type);
                     const newValue = getSignalValue(newSignal, type);
                     if (newValue !== oldValue) {
                         setSignalValue(oldSignal, newValue, type);
                         jsonResp.signals.push({
                             name  : newSignal.name,
-                            value : newValue
+                            value : newValue,
+                            type  : type
                         });
                     }
                 }
