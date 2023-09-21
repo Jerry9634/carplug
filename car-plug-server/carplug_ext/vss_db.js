@@ -12,7 +12,6 @@ function getSubTree(node, path) {
 		});
 	}
 	else {
-		node.name = path;
 		if (node.default) {
 			node.value = node.default;
 		}
@@ -24,7 +23,7 @@ function getSubTree(node, path) {
 }
 
 export function initVssDB() {
-	readFile('./carplug_ext/VssAPI.json', function(err, data) {
+	readFile('./carplug_ext/VssDB.json', function(err, data) {
 		const jsonData = JSON.parse(data);
 
 		Object.keys(jsonData).forEach((key) => {
@@ -39,6 +38,8 @@ export function getSignal(name) {
 
 export function setSignal(name, value) {
 	const signal = signalMap.get(name);
-	signal.value = value;
+	if (signal) {
+		signal.value = value;
+	}
 	return signal;
 }
