@@ -78,6 +78,15 @@ export function initVehicleSocketIO(httpServer) {
     const IO = new Server(httpServer, { cors: { origin: "*" } });
 
     IO.on('connection', (socket) => {
+
+        // Init VSS signals
+        canToVssMap.forEach((conv_func, canSig) => {
+            const canSigObj = getRawSignal(canSig);
+            if (canSigObj) {
+                conv_func(canSigObj.physicalValue);
+            }
+        });
+
         socket.on("set", msg => {
             if (msg.signals) {
                 const jsonResp = {
