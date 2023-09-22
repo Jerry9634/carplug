@@ -1,5 +1,5 @@
 cd .\car-plug-server
-start "" npm start
+start "" car-plug-server-win
 
 timeout /t 3
 
@@ -7,7 +7,7 @@ cd ..\car-plug-viewer
 start "" serve -s -l 3001
 
 cd ..\dashboard-pc\dashboard-proxy-server
-start "" npm start
+start "" dashboard-proxy-server-win
 
 timeout /t 1
 
