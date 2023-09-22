@@ -4,7 +4,7 @@
  * Code generated for vehicle signal conversion
  *
  * AutoWorks version              : 2023b
- * Javascript code generated on   : 21.09.2023 22:13:21
+ * Javascript code generated on   : 22.09.2023 14:03:36
  */
 
 import { 
@@ -12,10 +12,26 @@ import {
     getSignal as getRawSignal
 } from '../carplug_core/signal_db.js';
 import { 
-    getSignal as getVssSignal, 
-    setSignal as setVssSignal 
+    setSignal as setVssSignal,
+    getSignal as getVssSignal
 } from "./vss_db.js";
 
+
+const ClimateTemperatureSetEnum = {
+    BLANK: 0,
+    LO: 1,
+    MIN: 15,
+    MAX: 32,
+    HI: 254,
+    INVALID: 255,
+};
+
+const SelectedGearEnum = {
+    Neutral: 0,
+    Reverse: -1,
+    Park: 126,
+    Drive: 127,
+};
 
 
 const converterList = [
@@ -408,13 +424,30 @@ function cnv_HazardCtrlReq_to_Vehicle_Body_Lights_Hazard_IsSignaling(value, from
  */
 function cnv_Vehicle_Cabin_HVAC_Station_Row1_Driver_Temperature_to_HU_DATC_DrTempSetC(value, from="Vehicle.Cabin.HVAC.Station.Row1.Driver.Temperature", to="HU_DATC_DrTempSetC") {
     /*!!! USER CODE [cnv_Vehicle_Cabin_HVAC_Station_Row1_Driver_Temperature_to_HU_DATC_DrTempSetC] : Do NOT modify this line !!!*/
-    setRawSignal(to, Number(value));
+    let result;
+    const value1 = Number(value);
+    if (value1 >= ClimateTemperatureSetEnum.MIN && value1 <= ClimateTemperatureSetEnum.MAX) {
+		result = value1;    
+    }
+    else {
+    	result = value1 * 0.5 + 14;
+    }
+    setRawSignal(to, result);
     /*!!! END of USER CODE [cnv_Vehicle_Cabin_HVAC_Station_Row1_Driver_Temperature_to_HU_DATC_DrTempSetC] : Do NOT modify this line !!!*/
 }
 
 function cnv_HU_DATC_DrTempSetC_to_Vehicle_Cabin_HVAC_Station_Row1_Driver_Temperature(value, from="HU_DATC_DrTempSetC", to="Vehicle.Cabin.HVAC.Station.Row1.Driver.Temperature") {
     /*!!! USER CODE [cnv_HU_DATC_DrTempSetC_to_Vehicle_Cabin_HVAC_Station_Row1_Driver_Temperature] : Do NOT modify this line !!!*/
-    setVssSignal(to, Number(value));
+    let result;
+    let value1 = Number(value);
+    if (value1 >= ClimateTemperatureSetEnum.MIN && value1 <= ClimateTemperatureSetEnum.MAX) {
+		result = value1;    
+    }
+    else {
+        result = Number((value1 - 14) / 0.5).toFixed(0);
+        result = Number(result);
+    }
+    setVssSignal(to, result);
     /*!!! END of USER CODE [cnv_HU_DATC_DrTempSetC_to_Vehicle_Cabin_HVAC_Station_Row1_Driver_Temperature] : Do NOT modify this line !!!*/
 }
 
@@ -476,13 +509,30 @@ function cnv_HU_DATC_DrTempSetC_to_Vehicle_Cabin_HVAC_Station_Row1_Driver_Temper
  */
 function cnv_Vehicle_Cabin_HVAC_Station_Row1_Passenger_Temperature_to_HU_DATC_PsTempSetC(value, from="Vehicle.Cabin.HVAC.Station.Row1.Passenger.Temperature", to="HU_DATC_PsTempSetC") {
     /*!!! USER CODE [cnv_Vehicle_Cabin_HVAC_Station_Row1_Passenger_Temperature_to_HU_DATC_PsTempSetC] : Do NOT modify this line !!!*/
-    setRawSignal(to, Number(value));
+    let result;
+    const value1 = Number(value);
+    if (value1 >= ClimateTemperatureSetEnum.MIN && value1 <= ClimateTemperatureSetEnum.MAX) {
+		result = value1;    
+    }
+    else {
+    	result = value1 * 0.5 + 14;
+    }
+    setRawSignal(to, result);
     /*!!! END of USER CODE [cnv_Vehicle_Cabin_HVAC_Station_Row1_Passenger_Temperature_to_HU_DATC_PsTempSetC] : Do NOT modify this line !!!*/
 }
 
 function cnv_HU_DATC_PsTempSetC_to_Vehicle_Cabin_HVAC_Station_Row1_Passenger_Temperature(value, from="HU_DATC_PsTempSetC", to="Vehicle.Cabin.HVAC.Station.Row1.Passenger.Temperature") {
     /*!!! USER CODE [cnv_HU_DATC_PsTempSetC_to_Vehicle_Cabin_HVAC_Station_Row1_Passenger_Temperature] : Do NOT modify this line !!!*/
-    setVssSignal(to, Number(value));
+    let result;
+    let value1 = Number(value);
+    if (value1 >= ClimateTemperatureSetEnum.MIN && value1 <= ClimateTemperatureSetEnum.MAX) {
+		result = value1;    
+    }
+    else {
+        result = Number((value1 - 14) / 0.5).toFixed(0);
+        result = Number(result);
+    }
+    setVssSignal(to, result);
     /*!!! END of USER CODE [cnv_HU_DATC_PsTempSetC_to_Vehicle_Cabin_HVAC_Station_Row1_Passenger_Temperature] : Do NOT modify this line !!!*/
 }
 
@@ -551,13 +601,13 @@ function cnv_Vehicle_Powertrain_Transmission_SelectedGear_to_VCU_GearPosSta(valu
     /*!!! USER CODE [cnv_Vehicle_Powertrain_Transmission_SelectedGear_to_VCU_GearPosSta] : Do NOT modify this line !!!*/
     let result;
     const gearPos = Number(value);
-    if (gearPos === 0) {
+    if (gearPos === SelectedGearEnum.Neutral) {
         result = 6; // N
     }
-    else if (gearPos < 0) {
+    else if (gearPos <= SelectedGearEnum.Reverse) {
         result = 7; // R
     }
-    else if (gearPos === 127) {
+    else if (gearPos === SelectedGearEnum.Drive) {
         result = 5; // D
     }
     else {
@@ -572,16 +622,16 @@ function cnv_VCU_GearPosSta_to_Vehicle_Powertrain_Transmission_SelectedGear(valu
     let result;
     const gearPos = Number(value);
     if (gearPos === 6) {
-        result = 0; // N
+        result = SelectedGearEnum.Neutral; // N
     }
     else if (gearPos === 7) {
-        result = -1; // R
+        result = SelectedGearEnum.Reverse; // R
     }
     else if (gearPos === 5) {
-        result = 127; // D
+        result = SelectedGearEnum.Drive; // D
     }
     else {
-        result = 126; // P
+        result = SelectedGearEnum.Park; // P
     }
     setVssSignal(to, result);
     /*!!! END of USER CODE [cnv_VCU_GearPosSta_to_Vehicle_Powertrain_Transmission_SelectedGear] : Do NOT modify this line !!!*/
