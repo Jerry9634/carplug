@@ -69,26 +69,25 @@ CAN signal viewer
 - Set, Get, Subscribe/Unsubscribe supported
 
 
-# 6. Build and Run
-## 0) Install Node.js on your computer
+# 6. Demo
 ## 1) Vehicle signal server
 - Download 'car-plug-server'.
-- Install node modules [console]: npm install
-- Run the app [console]: npm start
-- Signal server can be executed on your Android tablet using Android terminal emulator such as Termux.
+- Unzip and run the app [console]: ./car-plug-server-win
+- Other executables for linux or mac OS are also available.
 ## 2) Dashboard (main HMI)
 - Download 'dashboard/VirtualDashboard-release.zip'.
 - Unzip and install it on your Android tablet. Continue installation even though some security warnings show up.
 - Run the app.
 ## 3) Dashboard desktop version (main HMI)
+- Install Node.js on your computer.
 - Download 'dashboard-pc/dashboard-proxy-server'.
-- Install node modules [console]: npm install
-- Run the app [console]: npm start
+- Unzip and run the app [console]: ./dashboard-proxy-server-win
 - Download 'dashboard-pc/dashboard-client'.
 - Install 'serve' module [console]: npm install -g serve
 - Run the app [console]: serve -s
 - Open browser (chrome) and type: localhost:3000
 ## 4) Signal viewer (optional)
+- Install Node.js on your computer.
 - Download 'car-plug-viewer'.
 - Install 'serve' module [console]: npm install -g serve
 - Run the app [console]: serve -s
