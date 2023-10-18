@@ -37,11 +37,7 @@ OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
-/*! chrome-dgram. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
-
-/*! run-series. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /**
  * @license
