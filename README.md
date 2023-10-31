@@ -29,22 +29,22 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 # 4. Architecture: Building Blocks
 ![overall architecture](carplug_architecture.png)
 
-## 1) dashboard (Tesla-style touchscreen UI, main HMI)
+## 1) Touchscreen (Tesla-style touchscreen UI, main HMI)
 **Android**(not Android Automotive) and **React Native** based touchscreen infotainment UI
 
-## 2) signal server
+## 2) Signal Server
 **Node.js** signal server/gateway for interconnecting **Legacy CAN** Domains and IP-based **High-Performance Computers**
 
-## 3) phone app (TBD)
+## 3) Vehicle Simulator
+**React** app simulating vehicle behavior and status
 
-## 4) vehicle simulation (TBD)
+## 4) Signal Viewer (development purpose only)
+Signal viewer: CAN and VSS
 
-## 5) dashboard desktop version (development purpose only)
+## 5) Touchscreen Desktop-version (development purpose only)
 For people who don't have any Android tablet.
 
-## 6) signal viewer (development purpose only)
-CAN signal viewer
-
+## 6) Phone App (TBD)
 
 # 5. Benefits
 ## 1) Why not Android Automotive but "pure" Android?
@@ -70,25 +70,31 @@ CAN signal viewer
 
 
 # 6. Demo
-## 1) Vehicle signal server
+## 1) Vehicle Signal Server
 - Download 'car-plug-server'.
 - Unzip and run the app [console]: ./car-plug-server-win
 - Other executables for linux or mac OS are also available.
-## 2) Dashboard (main HMI)
-- Download 'dashboard/VirtualDashboard-release.zip'.
+## 2) Vehicle Simulator
+- Install Node.js on your computer.
+- Download 'vehicle-simulator'.
+- Install 'serve' module [console]: npm install -g serve
+- Run the app [console]: serve -s -l 3000
+- Open browser (chrome) and type: localhost:3000
+## 3) Touchscreen (main HMI)
+- Download 'touchscreen/VirtualDashboard-release.zip'.
 - Unzip and install it on your Android tablet. Continue installation even though some security warnings show up.
 - Run the app.
-## 3) Dashboard desktop version (main HMI)
+## 3-1) Touchscreen Desktop version (main HMI alternative)
 - Install Node.js on your computer.
-- Download 'dashboard-pc/dashboard-proxy-server'.
-- Unzip and run the app [console]: ./dashboard-proxy-server-win
-- Download 'dashboard-pc/dashboard-client'.
+- Download 'touchscreen-pc/touchscreen-proxy-server'.
+- Unzip and run the app [console]: ./touchscreen-proxy-server-win
+- Download 'touchscreen-pc/touchscreen-client'.
 - Install 'serve' module [console]: npm install -g serve
-- Run the app [console]: serve -s
-- Open browser (chrome) and type: localhost:3000
+- Run the app [console]: serve -s -l 3002
+- Open browser (chrome) and type: localhost:3002
 ## 4) Signal viewer (optional)
 - Install Node.js on your computer.
 - Download 'car-plug-viewer'.
 - Install 'serve' module [console]: npm install -g serve
-- Run the app [console]: serve -s
-- Open browser (chrome) and type: localhost:3000
+- Run the app [console]: serve -s -l 3001
+- Open browser (chrome) and type: localhost:3001
