@@ -1,25 +1,34 @@
 * Replace the car image with your own (controllable) **3D model**.
 
 - Parking Gear Position
-  ![pic1](./Screenshot_20231109_091538_VirtualDashboard.jpg)
+  ![Parking](./Screenshot_20231109_091538_VirtualDashboard.jpg)
 
 - Driving Gear Position
-  ![pic2](./Screenshot_20230816235757.jpg)
+  ![Driving](./Screenshot_20231110_003946_VirtualDashboard.jpg)
 
 - Controls Section
-  ![pic3](./Screenshot_20230816235852.jpg)
+  ![Controls](./Screenshot_20231110_004111_VirtualDashboard.jpg)
 
 - Pedals & Steering Section
-  ![pic4](./Screenshot_20230816235937.jpg)
+  ![Pedals](./Screenshot_20231110_004138_VirtualDashboard.jpg)
+
+- Charging Section
+  ![Charging](./Screenshot_20231110_004202_VirtualDashboard.jpg)
 
 - Autopilot Section
-  ![pic5](./Screenshot_20230817000016.jpg)
+  ![Autopilot](./Screenshot_20231110_004227_VirtualDashboard.jpg)
 
 - Locks Section
-  ![pic6](./Screenshot_20230817000035.jpg)
+  ![Locks](./Screenshot_20231110_004240_VirtualDashboard.jpg)
 
 - Lights Section
-  ![pic7](./Screenshot_20230817000046.jpg)
+  ![Lights](./Screenshot_20231110_004253_VirtualDashboard.jpg)
 
-- Display Section
-  ![pic8](./Screenshot_20230817000054.jpg)
+- Navigation Section
+  ![Navigation](./Screenshot_20231110_004301_VirtualDashboard.jpg)
+
+- Safety Section
+  ![Safety](./Screenshot_20231110_004400_VirtualDashboard.jpg)
+
+- Service Section
+  ![Service](./Screenshot_20231110_004423_VirtualDashboard.jpg)
