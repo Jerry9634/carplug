@@ -1,7 +1,7 @@
 * Replace the car image with your own (controllable) **3D model**.
 
 - Parking Gear Position
-  ![pic1](./Screenshot_20230816235644.jpg)
+  ![pic1](./Screenshot_20231109_091538_VirtualDashboard.jpg)
 
 - Driving Gear Position
   ![pic2](./Screenshot_20230816235757.jpg)

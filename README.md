@@ -12,7 +12,8 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 
 
 # 3. Demo
-![the demo picture](demo/screenshots/01_Dashboard_CarControl/Screenshot_20230816235644.jpg)
+![the demo picture](carplug_prototyping.png)
+
 ## 1) screenshots
 - Car Control [car control pictures](demo/screenshots/01_Dashboard_CarControl/car_control.md)
 - Media: Radio, Netflix, YouTube, ... [media pictures](demo/screenshots/02_Dashboard_Media/media.md)
@@ -27,7 +28,7 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 - Camera
 
 # 4. Architecture: Building Blocks
-![overall architecture](carplug_architecture.png)
+![Overall Architecture](carplug_architecture.png)
 
 ## 1) Touchscreen (Tesla-style touchscreen UI, main HMI)
 **Android**(not Android Automotive) and **React Native** based touchscreen infotainment UI
