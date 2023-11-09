@@ -24,8 +24,11 @@
 - Lights Section
   ![Lights](./Screenshot_20231110_004253_VirtualDashboard.jpg)
 
+- Display Section
+  ![Display](./Screenshot_20231110_004301_VirtualDashboard.jpg)
+
 - Navigation Section
-  ![Navigation](./Screenshot_20231110_004301_VirtualDashboard.jpg)
+  ![Navigation](./Screenshot_20231110_004350_VirtualDashboard.jpg)
 
 - Safety Section
   ![Safety](./Screenshot_20231110_004400_VirtualDashboard.jpg)
