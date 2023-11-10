@@ -1,20 +1,14 @@
 - Media Apps
-  ![pic1](./Screenshot_20230817000140.jpg)
+  ![Media Apps](./Screenshot_20231110_111121_VirtualDashboard.jpg)
 
 - Korean Radio
-  ![pic2](./Screenshot_20230817000202.jpg)
+  ![Korean Radio](./Screenshot_20231110_111553_VirtualDashboard.jpg)
 
 - BBC Radio
-  ![pic3](./Screenshot_20230817000217.jpg)
+  ![BBC Radio](./Screenshot_20231110_111216_VirtualDashboard.jpg)
 
 - Netflix
-  ![pic4](./Screenshot_20230817000246.jpg)
-
-- Netflix full-screen
-  ![pic5](./Screenshot_20230817000353.jpg)
+  ![Netflix full-screen](./Screenshot_20231110_111454_VirtualDashboard.jpg)
 
 - YouTube
-  ![pic6](./Screenshot_20230817000419.jpg)
-
-- YouTube full-screen
-  ![pic7](./Screenshot_20230817000535.jpg)
+  ![YouTube](./Screenshot_20231110_111427_VirtualDashboard.jpg)
