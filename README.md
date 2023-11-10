@@ -11,16 +11,16 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 - Google or Apple integrating vehicle interfaces to its mobile OS (Android or iOS)
 
 
-# 3. Demo
+# 3. Demo Screenshots
 ![the demo picture](carplug_prototyping.png)
 
-## 1) screenshots
+## 1) Screenshots
 - Car Control [car control pictures](demo/screenshots/01_Dashboard_CarControl/car_control.md)
 - Media: Radio, Netflix, YouTube, ... [media pictures](demo/screenshots/02_Dashboard_Media/media.md)
 - Navigation [navigation pictures](demo/screenshots/03_Dashboard_Navigation/navigation.md)
 - Climate [climate pictures](demo/screenshots/04_Dashboard_Climate/climate.md)
 - Camera: coming soon
-## 2) videos (Screen recording)
+## 2) Videos (Screen recording)
 - Car Control
 - Media: Radio, Netflix, YouTube, ...
 - Navigation: Third-party map (Kakao, Google), Simulated Driving (Google map)
@@ -70,7 +70,7 @@ For people who don't have any Android tablet.
 - Set, Get, Subscribe/Unsubscribe supported
 
 
-# 6. Demo
+# 6. Set-up and Run
 ## 1) Vehicle Signal Server
 - Download 'car-plug-server'.
 - Unzip and run the app [console]: ./car-plug-server-win
