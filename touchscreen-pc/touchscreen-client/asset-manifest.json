@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/static/css/main.71eb2fba.css",
-    "main.js": "/static/js/main.7ad4f47f.js",
-    "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.6d6fe601.chunk.js",
-    "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.11eed60f.chunk.js",
-    "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.6295d427.chunk.js",
-    "reactPlayerFacebook.js": "/static/js/reactPlayerFacebook.2f6a631a.chunk.js",
-    "reactPlayerStreamable.js": "/static/js/reactPlayerStreamable.91abcad6.chunk.js",
-    "reactPlayerWistia.js": "/static/js/reactPlayerWistia.0bde6cf0.chunk.js",
-    "reactPlayerTwitch.js": "/static/js/reactPlayerTwitch.6ae6f984.chunk.js",
-    "reactPlayerDailyMotion.js": "/static/js/reactPlayerDailyMotion.3aa0dd2e.chunk.js",
-    "reactPlayerMixcloud.js": "/static/js/reactPlayerMixcloud.21cc58a8.chunk.js",
-    "reactPlayerVidyard.js": "/static/js/reactPlayerVidyard.221564de.chunk.js",
-    "reactPlayerKaltura.js": "/static/js/reactPlayerKaltura.f1fcb194.chunk.js",
-    "reactPlayerFilePlayer.js": "/static/js/reactPlayerFilePlayer.80de3862.chunk.js",
-    "reactPlayerPreview.js": "/static/js/reactPlayerPreview.d9391f8e.chunk.js",
+    "main.js": "/static/js/main.c9d02d9e.js",
+    "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.7f427e71.chunk.js",
+    "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.b38cab1a.chunk.js",
+    "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.d793aee4.chunk.js",
+    "reactPlayerFacebook.js": "/static/js/reactPlayerFacebook.16405172.chunk.js",
+    "reactPlayerStreamable.js": "/static/js/reactPlayerStreamable.fd55be39.chunk.js",
+    "reactPlayerWistia.js": "/static/js/reactPlayerWistia.45b16bcb.chunk.js",
+    "reactPlayerTwitch.js": "/static/js/reactPlayerTwitch.f2124927.chunk.js",
+    "reactPlayerDailyMotion.js": "/static/js/reactPlayerDailyMotion.fb0d040e.chunk.js",
+    "reactPlayerMixcloud.js": "/static/js/reactPlayerMixcloud.9e132794.chunk.js",
+    "reactPlayerVidyard.js": "/static/js/reactPlayerVidyard.45aedd25.chunk.js",
+    "reactPlayerKaltura.js": "/static/js/reactPlayerKaltura.524936ca.chunk.js",
+    "reactPlayerFilePlayer.js": "/static/js/reactPlayerFilePlayer.5f4ff0f0.chunk.js",
+    "reactPlayerPreview.js": "/static/js/reactPlayerPreview.bef3dbe7.chunk.js",
     "index.html": "/index.html"
   },
   "entrypoints": [
     "static/css/main.71eb2fba.css",
-    "static/js/main.7ad4f47f.js"
+    "static/js/main.c9d02d9e.js"
   ]
 }
