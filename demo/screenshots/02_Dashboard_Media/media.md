@@ -8,7 +8,7 @@
   ![BBC Radio](./Screenshot_20231110_111216_VirtualDashboard.jpg)
 
 - Netflix
-  ![Netflix full-screen](./Screenshot_20231110_111454_VirtualDashboard.jpg)
+  ![Netflix](./Screenshot_20231110_111454_VirtualDashboard.jpg)
 
 - YouTube
   ![YouTube](./Screenshot_20231110_111427_VirtualDashboard.jpg)
