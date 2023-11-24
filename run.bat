@@ -16,4 +16,3 @@ timeout /t 3
 
 start chrome http://localhost:3000/
 start chrome http://localhost:3001/
-start chrome http://localhost:3002/

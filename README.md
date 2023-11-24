@@ -71,27 +71,19 @@ For people who don't have any Android tablet.
 
 
 # 6. Set-up and Run
-## 1) Vehicle Signal Server
-- Download 'car-plug-server'.
-- Unzip and run the app [console]: ./car-plug-server-win
-- Other executables for linux or mac OS are also available.
-## 2) Vehicle Simulator
+## 1) Download all the executable packages
+- car-plug-server
+- vehicle-simulator
+- car-plug-viewer
+- touchscreen
+- run.bat
+## 2) Install Node.js
 - Install Node.js on your computer.
 - Install 'serve' module [console]: npm install -g serve
-- Download 'vehicle-simulator'.
-- Run the app [console]: serve -s -l 3000
-- Open browser (chrome) and type: localhost:3000
-## 3) Touchscreen (main HMI)
-- Download 'touchscreen/VirtualDashboard-release.zip'.
-- Unzip and install it on your Android tablet. Continue installation even though some security warnings show up.
+## 3) Run the Signal Server, Vehicle Simulator, and Signal Viewer
+- Execute 'run.bat' [console]: ./run.bat
+- For OS other than Windows (linux or mac OS), corresponding batch scripts can be written.
+## 4) Touchscreen (main HMI)
+- Unzip 'touchscreen/VirtualDashboard-release.zip'.
+- Install the APK on your Android tablet. Continue installation even though some security warnings show up.
 - Run the app.
-## 3-1) Touchscreen Desktop version (main HMI alternative)
-- Download 'touchscreen-pc/touchscreen-proxy-server'.
-- Unzip and run the app [console]: ./touchscreen-proxy-server-win
-- Download 'touchscreen-pc/touchscreen-client'.
-- Run the app [console]: serve -s -l 3002
-- Open browser (chrome) and type: localhost:3002
-## 4) Signal viewer (optional)
-- Download 'car-plug-viewer'.
-- Run the app [console]: serve -s -l 3001
-- Open browser (chrome) and type: localhost:3001
