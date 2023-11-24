@@ -42,10 +42,7 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 ## 4) Signal Viewer (development purpose only)
 Signal viewer: CAN and VSS
 
-## 5) Touchscreen Desktop-version (development purpose only)
-For people who don't have any Android tablet.
-
-## 6) Phone App (TBD)
+## 5) Phone App (TBD)
 
 # 5. Benefits
 ## 1) Why not Android Automotive but "pure" Android?
