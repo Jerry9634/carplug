@@ -1,12 +1,7 @@
 cd .\car-plug-server
 start "" car-plug-server-win
 
-timeout /t 3
-
-cd ..\vehicle-simulator\proxy-server
-start "" touchscreen-proxy-server-win
-
-cd ..
+cd ..\vehicle-simulator
 start "" serve -s -l 3000
 
 cd ..\car-plug-viewer
