@@ -2,10 +2,10 @@ cd .\car-plug-server
 start "" car-plug-server-win
 
 cd ..\vehicle-simulator
-start "" serve -s -l 3000
+start "" vehicle-simulator-win
 
 cd ..\car-plug-viewer
-start "" serve -s -l 3001
+start "" car-plug-viewer-win
 
 timeout /t 3
 

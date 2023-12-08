@@ -74,13 +74,10 @@ Signal viewer: CAN and VSS
 - car-plug-viewer
 - touchscreen
 - run.bat
-## 2) Install Node.js
-- Install Node.js on your computer.
-- Install 'serve' module [console]: npm install -g serve
-## 3) Run the Signal Server, Vehicle Simulator, and Signal Viewer
+## 2) Run the Signal Server, Vehicle Simulator, and Signal Viewer
 - Execute 'run.bat' [console]: ./run.bat
 - For OS other than Windows (linux or mac OS), corresponding batch scripts can be written.
-## 4) Touchscreen (main HMI)
+## 4) Run the Touchscreen (main HMI)
 - Unzip 'touchscreen/VirtualDashboard-release.zip'.
 - Install the APK on your Android tablet. Continue installation even though some security warnings show up.
 - Run the app.
