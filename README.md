@@ -62,9 +62,9 @@ Signal viewer: CAN and VSS
 - Huge "React Native" developer community
 - Performance not lost by utilizing Native module programming if necessary
 ## 3) Node.js
-- Several protocols processed by a single Node.js server: HTTP, WebSocket, UDP, WebRTC
+- Several protocols processed by a single Node.js server: HTTP, WebSocket, WebRTC, UDS
 - Thousands of CAN signals distributed efficiently to Apps residing on HPC and vice versa
-- Set, Get, Subscribe/Unsubscribe supported
+- Set, Get, Subscribe/Unsubscribe, Watchdog/Recovery supported
 
 
 # 6. Set-up and Run
@@ -73,12 +73,13 @@ Signal viewer: CAN and VSS
 - vehicle-simulator
 - car-plug-viewer
 - touchscreen
-- run.bat
+- run.bat (For Windows)
+- run-linux.sh (For Linux)
 ## 2) Run the Signal Server, Vehicle Simulator, and Signal Viewer
-- Execute 'run.bat' [console]: ./run.bat
+- For Windows, execute 'run.bat'.
 - For OS other than Windows (linux or mac OS), corresponding batch scripts can be written.
   For Linux, please refer to "run-linux.sh".
-## 4) Run the Touchscreen (main HMI)
+## 3) Run the Touchscreen (main HMI)
 - Unzip 'touchscreen/VirtualDashboard-release.zip'.
 - Install the APK on your Android tablet. Continue installation even though some security warnings show up.
 - Run the app.
