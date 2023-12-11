@@ -77,6 +77,7 @@ Signal viewer: CAN and VSS
 ## 2) Run the Signal Server, Vehicle Simulator, and Signal Viewer
 - Execute 'run.bat' [console]: ./run.bat
 - For OS other than Windows (linux or mac OS), corresponding batch scripts can be written.
+  For Linux, please refer to "run-linux.sh".
 ## 4) Run the Touchscreen (main HMI)
 - Unzip 'touchscreen/VirtualDashboard-release.zip'.
 - Install the APK on your Android tablet. Continue installation even though some security warnings show up.
