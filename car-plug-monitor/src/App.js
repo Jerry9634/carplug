@@ -5,9 +5,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-//import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
-//import Switch from '@mui/material/Switch';
+import Switch from '@mui/material/Switch';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
@@ -84,7 +84,6 @@ const App = () => {
     const [page, setPage] = useState(0);
     const [isDarkTheme, setDarkTheme] = useState(DARK_THEME_VAL);
     const [myTheme, setMyTheme] = useState(INITIAL_THEME);
-    // eslint-disable-next-line
     const [isNameBlurred, setNameBlurred] = useState(getDataSafely(NAME_BLUR_KEY, false));
     const [channel, setChannel] = useState(-1);
 
@@ -189,7 +188,7 @@ const App = () => {
 
                             <Stack direction="row" gap={0} sx={{ width: "30%", display: "flex", alignItems: "center", justifyContent: "flex-end" }} >
                                 <CANChannelSelection channel={channel} setChannel={setChannel} />
-                                {/* <FormControlLabel
+                                <FormControlLabel
                                     control={
                                         <Switch
                                             checked={isNameBlurred}
@@ -199,7 +198,7 @@ const App = () => {
                                     }
                                     label={isNameBlurred ? "On" : "Off"}
                                     sx={{ ml: 1 }}
-                                /> */}
+                                />
                                 <Button
                                     onClick={() => setDarkTheme(!isDarkTheme)}
                                     sx={{ paddingRight: 2 }}
