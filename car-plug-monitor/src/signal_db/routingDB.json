@@ -1,0 +1,316 @@
+{
+  "zones" : [ {
+    "name" : "FRONT",
+    "index" : 0,
+    "channels" : [ {
+      "name" : "CAN0",
+      "index" : 0,
+      "type" : "CAN FD",
+      "baudrate" : 2000000,
+      "nodes" : [ "ADAS1", "ADAS2", "ADAS3", "ADAS4" ]
+    }, {
+      "name" : "CAN1",
+      "index" : 1,
+      "type" : "CAN FD",
+      "baudrate" : 2000000,
+      "nodes" : [ "INFO1", "INFO2", "INFO3", "INFO4" ]
+    }, {
+      "name" : "ETH2",
+      "index" : 2,
+      "type" : "ETHERNET",
+      "baudrate" : 100000000,
+      "nodes" : [ "GW1" ]
+    } ]
+  }, {
+    "name" : "LEFT",
+    "index" : 1,
+    "channels" : [ {
+      "name" : "CAN0",
+      "index" : 3,
+      "type" : "CAN FD",
+      "baudrate" : 2000000,
+      "nodes" : [ "CHASS1", "CHASS2", "CHASS3", "CHASS4", "CHASS5", "CHASS6" ]
+    }, {
+      "name" : "CAN1",
+      "index" : 4,
+      "type" : "CAN",
+      "baudrate" : 500000,
+      "nodes" : [ "CHASS7", "CHASS8", "CHASS9", "CHASS10", "CHASS11", "CHASS12", "CHASS13" ]
+    }, {
+      "name" : "CAN2",
+      "index" : 5,
+      "type" : "CAN",
+      "baudrate" : 500000,
+      "nodes" : [ "BODY1", "BODY2", "BODY3", "BODY4", "BODY5", "BODY6", "BODY7" ]
+    } ]
+  }, {
+    "name" : "RIGHT",
+    "index" : 2,
+    "channels" : [ {
+      "name" : "CAN0",
+      "index" : 6,
+      "type" : "CAN",
+      "baudrate" : 500000,
+      "nodes" : [ "DRV1", "DRV2", "DRV3", "DRV4", "DRV5", "DRV6", "DRV7", "DRV8" ]
+    }, {
+      "name" : "CAN1",
+      "index" : 7,
+      "type" : "CAN",
+      "baudrate" : 500000,
+      "nodes" : [ "BODY8", "BODY9", "BODY10", "BODY11", "BODY12", "BODY13" ]
+    }, {
+      "name" : "CAN2",
+      "index" : 8,
+      "type" : "CAN",
+      "baudrate" : 500000,
+      "nodes" : [ "AM1", "AM2", "AM3", "AM4" ]
+    }, {
+      "name" : "CAN3",
+      "index" : 9,
+      "type" : "CAN",
+      "baudrate" : 500000,
+      "nodes" : [ "Tester" ]
+    } ]
+  }, {
+    "name" : "REAR",
+    "index" : 3,
+    "channels" : [ {
+      "name" : "CAN0",
+      "index" : 10,
+      "type" : "CAN FD",
+      "baudrate" : 2000000,
+      "nodes" : [ "HYDRO1", "HYDRO2", "HYDRO3", "HYDRO4", "HYDRO5", "HYDRO6", "HYDRO7", "HYDRO8", "HYDRO9" ]
+    }, {
+      "name" : "CAN1",
+      "index" : 11,
+      "type" : "CAN",
+      "baudrate" : 500000,
+      "nodes" : [ "BATT1", "BATT2", "BATT3", "BATT4" ]
+    } ]
+  } ],
+  "routings" : [],
+  "ecus" : [ {
+    "name" : "ACP",
+    "index" : 0
+  }, {
+    "name" : "BODY8",
+    "index" : 1
+  }, {
+    "name" : "ADAS1",
+    "index" : 2
+  }, {
+    "name" : "ADAS_PRK",
+    "index" : 3
+  }, {
+    "name" : "BODY1",
+    "index" : 4
+  }, {
+    "name" : "AMP",
+    "index" : 5
+  }, {
+    "name" : "CHASS7",
+    "index" : 6
+  }, {
+    "name" : "CHASS8",
+    "index" : 7
+  }, {
+    "name" : "BATT1",
+    "index" : 8
+  }, {
+    "name" : "BATT2",
+    "index" : 9
+  }, {
+    "name" : "BATT3",
+    "index" : 10
+  }, {
+    "name" : "BMU4",
+    "index" : 11
+  }, {
+    "name" : "BMU5",
+    "index" : 12
+  }, {
+    "name" : "BMU6",
+    "index" : 13
+  }, {
+    "name" : "BODY9",
+    "index" : 14
+  }, {
+    "name" : "GW1",
+    "index" : 15
+  }, {
+    "name" : "ADAS2",
+    "index" : 16
+  }, {
+    "name" : "INFO1",
+    "index" : 17
+  }, {
+    "name" : "BODY10",
+    "index" : 18
+  }, {
+    "name" : "BODY2",
+    "index" : 19
+  }, {
+    "name" : "AM1",
+    "index" : 20
+  }, {
+    "name" : "CHASS9",
+    "index" : 21
+  }, {
+    "name" : "EBS",
+    "index" : 22
+  }, {
+    "name" : "CHASS10",
+    "index" : 23
+  }, {
+    "name" : "DRV1",
+    "index" : 24
+  }, {
+    "name" : "BODY11",
+    "index" : 25
+  }, {
+    "name" : "CHASS1",
+    "index" : 26
+  }, {
+    "name" : "CHASS2",
+    "index" : 27
+  }, {
+    "name" : "AM2",
+    "index" : 28
+  }, {
+    "name" : "CHASS11",
+    "index" : 29
+  }, {
+    "name" : "DRV2",
+    "index" : 30
+  }, {
+    "name" : "AM3",
+    "index" : 31
+  }, {
+    "name" : "HYDRO1",
+    "index" : 32
+  }, {
+    "name" : "HYDRO2",
+    "index" : 33
+  }, {
+    "name" : "HYDRO3",
+    "index" : 34
+  }, {
+    "name" : "HYDRO4",
+    "index" : 35
+  }, {
+    "name" : "HYDRO5",
+    "index" : 36
+  }, {
+    "name" : "HYDRO6",
+    "index" : 37
+  }, {
+    "name" : "AM4",
+    "index" : 38
+  }, {
+    "name" : "ADAS3",
+    "index" : 39
+  }, {
+    "name" : "ADAS4",
+    "index" : 40
+  }, {
+    "name" : "HYDRO7",
+    "index" : 41
+  }, {
+    "name" : "HYDRO8",
+    "index" : 42
+  }, {
+    "name" : "HYDRO9",
+    "index" : 43
+  }, {
+    "name" : "HMU2",
+    "index" : 44
+  }, {
+    "name" : "CHASS3",
+    "index" : 45
+  }, {
+    "name" : "INFO2",
+    "index" : 46
+  }, {
+    "name" : "BODY12",
+    "index" : 47
+  }, {
+    "name" : "IDCU",
+    "index" : 48
+  }, {
+    "name" : "BODY3",
+    "index" : 49
+  }, {
+    "name" : "BODY13",
+    "index" : 50
+  }, {
+    "name" : "BODY4",
+    "index" : 51
+  }, {
+    "name" : "DRV3",
+    "index" : 52
+  }, {
+    "name" : "CHASS4",
+    "index" : 53
+  }, {
+    "name" : "DRV4",
+    "index" : 54
+  }, {
+    "name" : "DRV5",
+    "index" : 55
+  }, {
+    "name" : "INFO3",
+    "index" : 56
+  }, {
+    "name" : "BODY5",
+    "index" : 57
+  }, {
+    "name" : "CHASS5",
+    "index" : 58
+  }, {
+    "name" : "DRV6",
+    "index" : 59
+  }, {
+    "name" : "CHASS12",
+    "index" : 60
+  }, {
+    "name" : "SBW",
+    "index" : 61
+  }, {
+    "name" : "BODY6",
+    "index" : 62
+  }, {
+    "name" : "DRV7",
+    "index" : 63
+  }, {
+    "name" : "CHASS13",
+    "index" : 64
+  }, {
+    "name" : "Tester",
+    "index" : 65
+  }, {
+    "name" : "VCMS1",
+    "index" : 66
+  }, {
+    "name" : "VCMS2",
+    "index" : 67
+  }, {
+    "name" : "VCMS3",
+    "index" : 68
+  }, {
+    "name" : "CHASS6",
+    "index" : 69
+  }, {
+    "name" : "DRV8",
+    "index" : 70
+  }, {
+    "name" : "BATT4",
+    "index" : 71
+  }, {
+    "name" : "INFO4",
+    "index" : 72
+  }, {
+    "name" : "BODY7",
+    "index" : 73
+  } ],
+  "messages" : []
+}
