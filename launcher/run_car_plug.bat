@@ -6,7 +6,7 @@ rem timeout /t 3
 rem cd ..\car-plug-app\out\car-plug-app-win32-x64
 rem start "" car-plug-app
 
-cd .\car-plug-server
+cd ..\car-plug-server
 start "" npm start
 
 timeout /t 3
@@ -16,7 +16,7 @@ start "" npm start
 
 timeout /t 3
 
-cd ..\zone-controllers
+cd ..\launcher
 start /max "Zone FRONT(0)" Zone4_Win32 0
 rem timeout /t 1
 
