@@ -54,7 +54,7 @@ const CarExterior = () => {
     const { closeVehicle, windowSize } = useContext(AppContext);
 
     const {
-        departureReady, setDepartureReady,
+        setDepartureReady,
         row1DriverDoorOpen, row1PassengerDoorOpen, row2DriverDoorOpen, row2PassengerDoorOpen,
         frunkOpen, trunkOpen, chargePortOpen,
         row1DriverDoorLocked, row1PassengerDoorLocked, row2DriverDoorLocked, row2PassengerDoorLocked,
@@ -442,9 +442,7 @@ const CarExterior = () => {
                     >
                         <PersonRemove sx={{ width: 48, height: 48 }} />
                     </Button>
-                    <Button sx={{ width: 96, height: 64 }}
-                        onClick={(e) => { console.log(e); }}
-                    >
+                    <Button sx={{ width: 96, height: 64 }} >
                         <Passengers
                             size={24}
                             row1DriverSeatOccupied={row1DriverSeatOccupied} row1PassengerSeatOccupied={row1PassengerSeatOccupied}
