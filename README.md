@@ -1,17 +1,9 @@
 # 1. CarPlug Overview
 Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 - **Android**(not Android Automotive) and **React Native** for developing high-integrity UI
+- **Node.js** signal server/gateway for exchanging **Vehicle Control Signals** with **Touchscreen HMI**
 
-- **Node.js** signal server/gateway for interconnecting **Legacy CAN** Domains and IP-based **High-Performance Computers**
-
-
-# 2. Target Audience
-- OEM: trying to catch up with Tesla Touchscreen UI (Media Controller)
-- Tier-1: offering advanced but universal/single/own-branded infotainment system to several global OEMs
-- Google or Apple integrating vehicle interfaces to its mobile OS (Android or iOS)
-
-
-# 3. Demo Screenshots
+# 2. Demo Screenshots
 ![the demo picture](carplug_prototyping.png)
 
 ## 1) Screenshots
@@ -27,59 +19,34 @@ Solution for implementing Tesla clone (Tesla-style Touchscreen UI)
 - Climate Control
 - Camera
 
-# 4. Architecture: Building Blocks
+# 3. Architecture: Building Blocks
 ![Overall Architecture](carplug_architecture.png)
 
 ## 1) Touchscreen (Tesla-style touchscreen UI, main HMI)
 **Android**(not Android Automotive) and **React Native** based touchscreen infotainment UI
 
 ## 2) Signal Server
-**Node.js** signal server/gateway for interconnecting **Legacy CAN** Domains and IP-based **High-Performance Computers**
+**Node.js** signal server/gateway for exchanging **Vehicle Control Signals** with **Touchscreen HMI**
 
-## 3) Vehicle Simulator
-**React** app simulating vehicle behavior and status
+## 3) Zone Monitor embedding Vehicle Simulator
+- **Zone Monitor** app for monitoring Vehicle Zones
+- **Vehicle Simulator** app simulating vehicle behavior and status
+- **Touchscreen** app (React App) is also included.
 
-## 4) Signal Viewer (development purpose only)
-Signal viewer: CAN and VSS
-
-## 5) Phone App (TBD)
-
-# 5. Benefits
-## 1) Why not Android Automotive but "pure" Android?
-- Well-established mobile Apps can be reused without any change
-
-  Third-party navigation and map: Google, Baidu, and Korean maps (Kakao, T-Map)
-
-  Music streaming: Spotify, YouTube Music, ...
-
-  OTT: Netflix, YouTube, ...
-- ICT industry's tons of developers ready to join auto industry only if vehicle signals are visible to them. Where Signal Server/Gateway is needed.
-
-  Are they willing to learn Android Automotive? Not very likely.
-## 2) React Native
-- Easy Javascript programming language
-- Largest Javascript developer pool
-- Huge "React Native" developer community
-- Performance not lost by utilizing Native module programming if necessary
-## 3) Node.js
-- Several protocols processed by a single Node.js server: HTTP, WebSocket, WebRTC, UDS
-- Thousands of CAN signals distributed efficiently to Apps residing on HPC and vice versa
-- Set, Get, Subscribe/Unsubscribe, Watchdog/Recovery supported
-
-
-# 6. Set-up and Run
-## 1) Download all the executable packages
+# 4. Set-up and Run
+## 1) Clone at least the following apps.
 - car-plug-server
-- vehicle-simulator
-- car-plug-viewer
-- touchscreen
-- run.bat (For Windows)
-- run-linux.sh (For Linux)
-## 2) Run the Signal Server, Vehicle Simulator, and Signal Viewer
-- For Windows, execute 'run.bat'.
-- For OS other than Windows (linux or mac OS), corresponding batch scripts can be written.
-  For Linux, please refer to "run-linux.sh".
-## 3) Run the Touchscreen (main HMI)
+- car-plug-monitor
+- launcher
+## 2) Install Node.js modules: execute "npm install" where,
+- car-plug-server
+- car-plug-monitor
+## 3) Put your Google Map API Key into "car-plug-monitor/.env" file where,
+- REACT_APP_GOOGLE_MAP_API_KEY="Enter Your Google Map API Key"
+## 4) Launch the apps by executing the batch file in "launcher" folder.
+- For Windows, execute 'run_car_plug.bat'.
+- For Linux, to be defined.
+## 5) (Optional) Run the Touchscreen (main HMI)
 - Unzip 'touchscreen/VirtualDashboard-release.zip'.
 - Install the APK on your Android tablet. Continue installation even though some security warnings show up.
 - Run the app.
