@@ -19,7 +19,7 @@ import ExteriorConditions from "../car_exterior/ExteriorConditions";
 import Battery from "../car_exterior/Battery";
 import ClusterIndicators from "./ClusterIndicators";
 import LockStatus from "../car_exterior/LockStatus";
-import Passengers from "../car_exterior/Passengers";
+import Passengers from "../car_interior/Passengers";
 import { MyTooltip } from "./CarInterior";
 
 import vssApi from "../../signal_db/VssAPI.json";
