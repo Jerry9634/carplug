@@ -442,14 +442,15 @@ const CarExterior = () => {
                     >
                         <PersonRemove sx={{ width: 48, height: 48 }} />
                     </Button>
-                    <Button sx={{ width: 96, height: 64 }}>
+                    <Button sx={{ width: 96, height: 64 }}
+                        onClick={(e) => { console.log(e); }}
+                    >
                         <Passengers
                             size={24}
                             row1DriverSeatOccupied={row1DriverSeatOccupied} row1PassengerSeatOccupied={row1PassengerSeatOccupied}
                             row2DriverSeatOccupied={row2DriverSeatOccupied} row2PassengerSeatOccupied={row2PassengerSeatOccupied}
                             row1DriverSeatBelted={row1DriverSeatBelted} row1PassengerSeatBelted={row1PassengerSeatBelted}
                             row2DriverSeatBelted={row2DriverSeatBelted} row2PassengerSeatBelted={row2PassengerSeatBelted}
-                            departureReady={departureReady}
                         />
                     </Button>
                     <Button sx={{ width: 96, height: 64 }} id="trip-start"
