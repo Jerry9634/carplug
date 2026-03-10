@@ -32,7 +32,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import { Resizable } from 're-resizable';
 
-import { getDataSafely, saveData } from "../persistency/PersistentMemory";
+import { getDataSafely, saveData } from '../persistency/PersistentMemory';
 
 
 export const CustomTabPanel = (props) => {
@@ -142,7 +142,7 @@ const CustomResizeHandle = (props) => {
     );
 };
 
-export const CustomResizable = ({ children, moduleStore, treeWidth, setTreeWidth, MIN_WIDTH, MAX_WIDTH, MAX_HEIGHT }) => {
+export const CustomResizable = ({ children, name, masterWidth, setMasterWidth, MIN_WIDTH, MAX_WIDTH, MAX_HEIGHT }) => {
 
     const [resizeStart, setResizeStart] = useState(false);
     const [handleActive, setHandleActive] = useState(false);
@@ -155,15 +155,15 @@ export const CustomResizable = ({ children, moduleStore, treeWidth, setTreeWidth
 
     const onResizeStop = useCallback((delta) => {
         if (resizeStart) {
-            const newWidth = treeWidth + delta.width;
+            const newWidth = masterWidth + delta.width;
             if (newWidth < MIN_WIDTH) {
-                setTreeWidth(MIN_WIDTH);
+                setMasterWidth(MIN_WIDTH);
             }
             else if (newWidth > MAX_WIDTH) {
-                setTreeWidth(MAX_WIDTH);
+                setMasterWidth(MAX_WIDTH);
             }
             else {
-                setTreeWidth(newWidth);
+                setMasterWidth(newWidth);
             }
             setResizeStart(false);
             const id = setTimeout(() => {
@@ -172,16 +172,16 @@ export const CustomResizable = ({ children, moduleStore, treeWidth, setTreeWidth
             }, 0);
             setTimeoutId(id);
         }
-    }, [resizeStart, setTreeWidth, MIN_WIDTH, MAX_WIDTH, treeWidth]);
+    }, [resizeStart, setMasterWidth, MIN_WIDTH, MAX_WIDTH, masterWidth]);
 
     useEffect(() => {
-        saveData(moduleStore.name + ".treeWidth", treeWidth);
-    }, [moduleStore, treeWidth]);
+        saveData(name + ".treeWidth", masterWidth);
+    }, [name, masterWidth]);
 
     return (
         <Resizable
             minWidth={MIN_WIDTH} maxWidth={MAX_WIDTH}
-            size={{ width: treeWidth, height: MAX_HEIGHT }}
+            size={{ width: masterWidth, height: MAX_HEIGHT }}
             onResize={onResize}
             onResizeStop={(event, direction, elementRef, delta) => onResizeStop(delta)}
             handleComponent={{
@@ -214,11 +214,11 @@ export const CustomResizable = ({ children, moduleStore, treeWidth, setTreeWidth
     );
 };
 
-export const getPageDimension = (moduleStore, windowSize) => {
+export const getPageDimension = (name, windowSize) => {
     return ({
-        INITIAL_WIDTH: getDataSafely(moduleStore.name + ".treeWidth", windowSize.width * 0.2),
+        INITIAL_WIDTH: getDataSafely(name + ".treeWidth", windowSize.width * 0.2),
         MIN_WIDTH: 0,
-        MAX_WIDTH: windowSize.width * 0.5,
+        MAX_WIDTH: windowSize.width * 0.4,
         MAX_HEIGHT: (windowSize.height - 108),
     });
 };

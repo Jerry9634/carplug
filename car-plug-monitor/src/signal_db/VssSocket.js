@@ -1,6 +1,7 @@
 import SocketIOClient from 'socket.io-client';
-import vssApi from "./VssAPI.json";
+import vssApi from './VssAPI.json';
 import { saveData, getData, getDataSafely } from '../persistency/PersistentMemory';
+
 
 const IO_IP_ADDRESS = process.env.REACT_APP_IO_IP_ADDRESS;
 const IO_PORT = process.env.REACT_APP_IO_PORT;

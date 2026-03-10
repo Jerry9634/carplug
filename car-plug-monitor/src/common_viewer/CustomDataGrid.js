@@ -2,13 +2,13 @@ import { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState 
 import { DataGrid, gridClasses, useGridApiRef } from '@mui/x-data-grid';
 
 import { AppContext } from '../AppContext';
-import { CustomToolbar } from "./CustomStyles";
-import { restoreColumnWidths } from "../persistency/PersistentMemory";
+import { CustomToolbar } from './CustomStyles';
+import { restoreColumnWidths } from '../persistency/PersistentMemory';
 
 
 const CustomDataGrid = ({
     gridName, rows, defaultColumns,
-    containerStyles,
+    containerStyles=undefined,
     handleGetCellClassName=undefined,
     handleGetRowClassName=undefined,
     handleCellEditStop=undefined,
@@ -60,7 +60,7 @@ const CustomDataGrid = ({
     }, [containerStyles, defaultContainerStyles]);
 
     const handleGetCellClassNameDefault = useCallback((params) => {
-        if (params.field === "id" || params.field === 'vssKey') {
+        if (params.field === "id" || params.field === 'key' || params.field === 'label') {
             return "key";
         }
         else if (params.field === "value") {
@@ -100,16 +100,19 @@ const CustomDataGrid = ({
         setTimeout(restoreSnapshot, 0);
     }, [restoreSnapshot]);
 
-    useLayoutEffect(() => {
-        // handle refresh and navigating away/refreshing
-        window.addEventListener('beforeunload', saveSnapshot);
+    useLayoutEffect(
+        () => {
+            // handle refresh and navigating away/refreshing
+            window.addEventListener('beforeunload', saveSnapshot);
 
-        return () => {
-            // in case of an SPA remove the event-listener
-            window.removeEventListener('beforeunload', saveSnapshot);
-            saveSnapshot();
-        };
-    }, [saveSnapshot]);
+            return () => {
+                // in case of an SPA remove the event-listener
+                window.removeEventListener('beforeunload', saveSnapshot);
+            };
+        },
+        // eslint-disable-next-line
+        []
+    );
 
     return (
         <DataGrid

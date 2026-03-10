@@ -1,8 +1,8 @@
-import dgram from "node:dgram";
-import { Buffer } from "node:buffer";
-import os from "node:os";
+import dgram from 'node:dgram';
+import { Buffer } from 'node:buffer';
+import os from 'node:os';
 
-import { getSignal, setSignal } from "./vssDB.js";
+import { getSignal, setSignal } from './vssDB.js';
 
 
 const MSG_HEADER_LEN = 7;
@@ -20,146 +20,6 @@ const ZONES = {
     ZONE_RIGHT: 2,
     ZONE_REAR: 3,
     ZONE_COMMANDER_ID: 0xFC
-};
-
-const serverInfo = {
-    SELF_IP: "127.0.0.1",
-    UDP_PORT: 49152,
-    UDP_BROADCAST_ADDR: "192.168.0.255",
-    UDP_MULTICAST_ADDR: "239.255.255.250",
-    udpServer: null
-};
-
-
-export const startCAN = (coipPort, socketIOServer, watchdogCounters) => {
-
-    const udpServer = serverInfo.udpServer = dgram.createSocket({ type: 'udp4', reuseAddr: true });
-    const UDP_PORT = serverInfo.UDP_PORT = coipPort;
-    const IO = socketIOServer;
-
-    const networkInterfaces = os.networkInterfaces();
-    let validAddr = false;
-    for (const interfaceName in networkInterfaces) {
-        const interfaces = networkInterfaces[interfaceName];
-        for (const iface of interfaces) {
-            // Check for IPv4 and non-internal addresses
-            if (iface.family === 'IPv4' && !iface.internal) {
-                serverInfo.SELF_IP = iface.address;
-                const IPs = iface.address.split(".");
-                serverInfo.UDP_BROADCAST_ADDR = `${IPs[0]}.${IPs[1]}.${IPs[2]}.255`;
-                console.log(`UDP broadcast address: ${serverInfo.UDP_BROADCAST_ADDR}`);
-                validAddr = true;
-                break;
-            }
-        }
-        if (validAddr) {
-            break;
-        }
-    }
-
-    const receive_udp = (msg) => {
-        if (watchdogCounters.has("watchdog_udp")) {
-            if (watchdogCounters.get("watchdog_udp") > 0) {
-                IO.emit("receive_udp", msg);
-            }
-        }
-    };
-
-    udpServer.on('error', (err) => {
-        console.error(`server error:\n${err.stack}`);
-        udpServer.close();
-    });
-
-    udpServer.on('listening', () => {
-        const address = udpServer.address();
-        console.log(`UDP socket listening on ${address.address}:${address.port}`);
-        udpServer.setBroadcast(true);        
-        //udpServer.addMembership(serverInfo.UDP_MULTICAST_ADDR); // Join the multicast group
-        //console.log(`Joined multicast group: ${serverInfo.UDP_MULTICAST_ADDR}`);
-    });
-
-    udpServer.bind(UDP_PORT, serverInfo.SELF_IP);
-
-    udpServer.on('message', (msg, rinfo) => {
-        if (msg[0] === IP_SOF_BYTE1 && msg[1] === IP_SOF_BYTE2 && msg.length > MSG_HEADER_LEN) {
-            const type = msg[2];
-            const seq = msg[3];
-            const len = (msg[4] << 8) + msg[5];
-            const zone = msg[6];
-            if (zone !== ZONES.ZONE_COMMANDER_ID && len === msg.length) {
-                if (type < IP_SOF_VSS_CMD) {
-                    const zoneMsg = {
-                        address: rinfo.address,
-                        type: type,
-                        seq: seq,
-                        len: len,
-                        zone: zone,
-                        data: Array.from(msg)
-                    };
-                    receive_udp(zoneMsg);
-                }
-                else if (type === IP_SOF_VSS_RES) {
-                    const json = JSON.parse(msg.subarray(MSG_HEADER_LEN).toString());
-                    if (json && json.signals) {
-                        if (json.type === "vss") {
-                            for (const signal of json.signals) {
-                                setSignal(signal.name, signal.value);
-                            }
-                        }
-                        else if (json.type === "get") {
-                            json.type = "vss";
-                            for (const signal of json.signals) {
-                                const storedSignal = getSignal(signal.name);
-                                signal.value = storedSignal.value;
-                            }
-                            send_vss(json, IP_SOF_VSS_RES);
-                        }
-                    }
-                }
-            }
-        }
-    });
-};
-
-export const send_udp = (msg) => {
-    const txt = msg.data;
-    const LEN = MSG_HEADER_LEN + txt.length;
-    const tx_buf = Buffer.alloc(LEN);
-
-    tx_buf[0] = IP_SOF_BYTE1;
-    tx_buf[1] = IP_SOF_BYTE2;
-    tx_buf[2] = IP_SOF_CMD_DATA;
-    tx_buf[3] = 0x00;
-    tx_buf[4] = (LEN >>> 8) & 0xFF;
-    tx_buf[5] = LEN & 0xFF;
-    tx_buf[6] = ZONES.ZONE_COMMANDER_ID;
-
-    const command = Buffer.from(txt);
-    command.copy(tx_buf, MSG_HEADER_LEN, 0);
-    serverInfo.udpServer.send(tx_buf, serverInfo.UDP_PORT, serverInfo.UDP_BROADCAST_ADDR);
-    //serverInfo.udpServer.send(tx_buf, serverInfo.UDP_PORT, serverInfo.UDP_MULTICAST_ADDR);
-};
-
-const send_vss = (msg, type) => {
-    const txt = JSON.stringify(msg);
-    const LEN = MSG_HEADER_LEN + txt.length;
-    const tx_buf = Buffer.alloc(LEN);
-
-    tx_buf[0] = IP_SOF_BYTE1;
-    tx_buf[1] = IP_SOF_BYTE2;
-    tx_buf[2] = type;
-    tx_buf[3] = 0x00;
-    tx_buf[4] = (LEN >>> 8) & 0xFF;
-    tx_buf[5] = LEN & 0xFF;
-    tx_buf[6] = ZONES.ZONE_COMMANDER_ID;
-
-    const command = Buffer.from(txt);
-    command.copy(tx_buf, MSG_HEADER_LEN, 0);
-    serverInfo.udpServer.send(tx_buf, serverInfo.UDP_PORT, serverInfo.UDP_BROADCAST_ADDR);
-    //serverInfo.udpServer.send(tx_buf, serverInfo.UDP_PORT, serverInfo.UDP_MULTICAST_ADDR);
-    if (LEN > 1024) {
-        console.log("\nVSS cmd len: " + LEN);
-    }
 };
 
 const INTERNAL_SIGNALS = [
@@ -189,7 +49,137 @@ const INTERNAL_SIGNALS = [
 
 const internalVssSignals = new Set(INTERNAL_SIGNALS);
 
-export const send_vss_cmd = (msg) => {
+const serverInfo = {
+    SELF_IP: "127.0.0.1",
+    UDP_PORT: 49152,
+    UDP_BROADCAST_ADDR: "192.168.0.255",
+    UDP_MULTICAST_ADDR: "239.255.255.250",
+    udpServer: null,
+    socketIOServer: null,
+    watchdogCounters: null,
+    init: function (coipPort, socketIOServer, watchdogCounters) {
+        this.udpServer = dgram.createSocket({ type: 'udp4', reuseAddr: true });
+        this.UDP_PORT = Number(coipPort);
+
+        this.socketIOServer = socketIOServer;
+        this.watchdogCounters = watchdogCounters;
+
+        const networkInterfaces = os.networkInterfaces();
+        let validAddr = false;
+        for (const interfaceName in networkInterfaces) {
+            const interfaces = networkInterfaces[interfaceName];
+            for (const iface of interfaces) {
+                // Check for IPv4 and non-internal addresses
+                if (iface.family === 'IPv4' && !iface.internal) {
+                    this.SELF_IP = iface.address;
+                    const IPs = iface.address.split(".");
+                    this.UDP_BROADCAST_ADDR = `${IPs[0]}.${IPs[1]}.${IPs[2]}.255`;
+                    console.log(`UDP broadcast address: ${this.UDP_BROADCAST_ADDR}`);
+                    validAddr = true;
+                    break;
+                }
+            }
+            if (validAddr) {
+                break;
+            }
+        }
+    },
+    receive_udp: function (msg) {
+        if (this.watchdogCounters.has("watchdog_udp")) {
+            if (this.watchdogCounters.get("watchdog_udp") > 0) {
+                socketIOServer.emit("receive_udp", msg);
+            }
+        }
+    },
+    send_vss: function (msg, type) {
+        const txt = JSON.stringify(msg);
+        const LEN = MSG_HEADER_LEN + txt.length;
+        const tx_buf = Buffer.alloc(LEN);
+
+        tx_buf[0] = IP_SOF_BYTE1;
+        tx_buf[1] = IP_SOF_BYTE2;
+        tx_buf[2] = type;
+        tx_buf[3] = 0x00;
+        tx_buf[4] = (LEN >>> 8) & 0xFF;
+        tx_buf[5] = LEN & 0xFF;
+        tx_buf[6] = ZONES.ZONE_COMMANDER_ID;
+
+        const command = Buffer.from(txt);
+        command.copy(tx_buf, MSG_HEADER_LEN, 0);
+        this.udpServer.send(tx_buf, this.UDP_PORT, this.UDP_BROADCAST_ADDR);
+        //if (LEN > 1024) {
+        //    console.log("\nVSS cmd len: " + LEN);
+        //}
+    }
+};
+
+
+export function startCAN(coipPort, socketIOServer, watchdogCounters) {
+    serverInfo.init(coipPort, socketIOServer, watchdogCounters);
+
+    const { udpServer, UDP_PORT, SELF_IP } = serverInfo;
+
+    udpServer.on('error', (err) => {
+        console.error(`server error:\n${err.stack}`);
+        udpServer.close();
+    });
+
+    udpServer.on('listening', () => {
+        const address = udpServer.address();
+        console.log(`UDP socket listening on ${address.address}:${address.port}`);
+        udpServer.setBroadcast(true);
+        //udpServer.addMembership(serverInfo.UDP_MULTICAST_ADDR); // Join the multicast group
+        //console.log(`Joined multicast group: ${serverInfo.UDP_MULTICAST_ADDR}`);
+    });
+
+    udpServer.bind(UDP_PORT, SELF_IP);
+
+    udpServer.on('message', (msg, rinfo) => {
+        if (msg[0] === IP_SOF_BYTE1 && msg[1] === IP_SOF_BYTE2 && msg.length > MSG_HEADER_LEN) {
+            const type = msg[2];
+            const seq = msg[3];
+            const len = (msg[4] << 8) + msg[5];
+            const zone = msg[6];
+            if (zone !== ZONES.ZONE_COMMANDER_ID && len === msg.length) {
+                if (type < IP_SOF_VSS_CMD) {
+                    const zoneMsg = {
+                        address: rinfo.address,
+                        type: type,
+                        seq: seq,
+                        len: len,
+                        zone: zone,
+                        data: Array.from(msg)
+                    };
+                    serverInfo.receive_udp(zoneMsg);
+                }
+                else if (type === IP_SOF_VSS_RES) {
+                    const json = JSON.parse(msg.subarray(MSG_HEADER_LEN).toString());
+                    if (json && json.signals) {
+                        if (json.type === "vss") {
+                            for (const signal of json.signals) {
+                                setSignal(signal.name, signal.value);
+                            }
+                        }
+                        else if (json.type === "get") {
+                            json.type = "vss";
+                            for (const signal of json.signals) {
+                                const storedSignal = getSignal(signal.name);
+                                signal.value = storedSignal.value;
+                            }
+                            serverInfo.send_vss(json, IP_SOF_VSS_RES);
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+export function send_udp(msg) {
+    serverInfo.send_vss(msg, IP_SOF_CMD_DATA);
+}
+
+export function send_vss(msg) {
     if (msg && msg.signals) {
         const outSignals = [];
         const inSignals = [];
@@ -203,11 +193,11 @@ export const send_vss_cmd = (msg) => {
         }
         if (inSignals.length > 0) {
             msg.signals = inSignals;
-            send_vss(msg, IP_SOF_VSS_RES);
+            serverInfo.send_vss(msg, IP_SOF_VSS_RES);
         }
         if (outSignals.length > 0) {
             msg.signals = outSignals;
-            send_vss(msg, IP_SOF_VSS_CMD);
+            serverInfo.send_vss(msg, IP_SOF_VSS_CMD);
         }
     }
-};
+}

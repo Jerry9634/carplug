@@ -1,5 +1,5 @@
 
-export const sendHttpRequest = async (query) => {
+export async function sendHttpRequest(query) {
     let data;
     try {
         const res = await fetch(query, { method: 'GET' });
@@ -9,9 +9,9 @@ export const sendHttpRequest = async (query) => {
         //
     }
     return data;
-};
+}
 
-export const getOpenWeather = async (apiKey, latitude, longitude, city) => {
+export async function getOpenWeather(apiKey, latitude, longitude, city) {
     let url;
     if (latitude != null && longitude != null) {
         url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
@@ -31,9 +31,9 @@ export const getOpenWeather = async (apiKey, latitude, longitude, city) => {
         }
     }
     return data;
-};
+}
 
-export const getRadioStreamingURLs = async (stationList) => {
+export async function getRadioStreamingURLs(stationList) {
     try {
         for (const station of stationList) {
             const url = "http://serpent0.duckdns.org:8088/" + station.pls;
@@ -52,4 +52,4 @@ export const getRadioStreamingURLs = async (stationList) => {
         //
     }
     return stationList;
-};
+}

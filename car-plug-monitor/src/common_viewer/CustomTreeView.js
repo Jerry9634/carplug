@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TableContainer from '@mui/material/TableContainer';
 
@@ -8,15 +9,16 @@ import {
 } from '@mui/x-tree-view';
 
 import { AppContext } from '../AppContext';
-import { CustomResizable, getPageDimension } from "./CustomStyles";
-import { setInitialSelection } from "./ViewerUtil";
+import { CustomResizable, getPageDimension } from './CustomStyles';
+import { setInitialSelection } from './ViewerUtil';
 
 
 const CustomTreeView = ({
     children,
     moduleStore, items, CustomTreeItem,
     selectedId, setSelectedId, navigationHistory=undefined,
-    isItemEditable=undefined, handleItemLabelChange=undefined
+    isItemEditable=undefined, handleItemLabelChange=undefined,
+    expandReq=false, enlargeLeftTree=false, separatorColor="transparent"
 }) => {
 
     const { nodeMap, parentMap, expandedItemSet } = moduleStore;
@@ -24,7 +26,9 @@ const CustomTreeView = ({
     const { windowSize } = useContext(AppContext);
 
     const { INITIAL_WIDTH, MIN_WIDTH, MAX_WIDTH, MAX_HEIGHT } = useMemo(
-        () => getPageDimension(moduleStore, windowSize), [moduleStore, windowSize]);
+        () => getPageDimension(moduleStore.name, windowSize),
+        [moduleStore, windowSize]
+    );
 
     const [treeWidth, setTreeWidth] = useState(INITIAL_WIDTH);
 
@@ -66,12 +70,12 @@ const CustomTreeView = ({
             }
             setExpandedItems(Array.from(expandedItemSet));
         }
-    }, [expandedItemSet, moduleStore, nodeMap, parentMap, selectedId, setExpandedItems]);
+    }, [expandedItemSet, moduleStore, nodeMap, parentMap, selectedId, setExpandedItems, expandReq]);
 
     return (
-        <Stack direction="row" gap={4} sx={{ maxHeight: MAX_HEIGHT }}>
+        <Stack direction="row" gap={0.5} sx={{ maxHeight: MAX_HEIGHT }}>
             <CustomResizable
-                moduleStore={moduleStore} treeWidth={treeWidth} setTreeWidth={setTreeWidth}
+                name={moduleStore.name} masterWidth={treeWidth} setMasterWidth={setTreeWidth}
                 MIN_WIDTH={MIN_WIDTH} MAX_WIDTH={MAX_WIDTH} MAX_HEIGHT={MAX_HEIGHT}
             >
                 <TableContainer sx={{ width: "100%", height: MAX_HEIGHT }}>
@@ -87,7 +91,9 @@ const CustomTreeView = ({
                     />
                 </TableContainer>
             </CustomResizable>
-            <TableContainer sx={{ width: (windowSize.width - treeWidth), height: MAX_HEIGHT }}>
+            <Box sx={{ width: "1px", height: MAX_HEIGHT, backgroundColor: separatorColor }}/>
+            <Box sx={{ width: "8px", height: MAX_HEIGHT, backgroundColor: "transparent" }}/>
+            <TableContainer sx={{ width: (windowSize.width - treeWidth), height: enlargeLeftTree? (MAX_HEIGHT + 16) : (MAX_HEIGHT) }}>
                 {children}
             </TableContainer>
         </Stack>

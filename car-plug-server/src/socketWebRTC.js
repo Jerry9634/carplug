@@ -1,7 +1,7 @@
-import { Server } from "socket.io";
+import { Server } from 'socket.io';
 
 
-export const initIO = (httpServer) => {
+export function initIO(httpServer) {
 
     const IO = new Server(httpServer);
 
@@ -49,4 +49,4 @@ export const initIO = (httpServer) => {
             });
         });
     });
-};
+}

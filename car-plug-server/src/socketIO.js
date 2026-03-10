@@ -1,36 +1,23 @@
-import { Server } from "socket.io";
+import { Server } from 'socket.io';
 
-import {
-    startCAN,
-    send_udp,
-    send_vss_cmd
-} from "./udpCAN.js";
-
-import {
-    initVssDB,
-    getSignal
-} from "./vssDB.js";
-
-import {
-    sendHttpRequest,
-    getOpenWeather,
-    getRadioStreamingURLs
-} from "./webApi.js";
+import { startCAN, send_udp, send_vss } from './udpCAN.js';
+import { initVssDB, getSignal } from './vssDB.js';
+import { sendHttpRequest, getOpenWeather, getRadioStreamingURLs } from './webApi.js';
 
 
-export const initIO = (httpServer, coipPort) => {
+export function initIO(httpServer, coipPort) {
     const socketIOServer = new Server(httpServer, {
         cors: { origin: "*" },
         maxHttpBufferSize: 2e8 // 200 MB,
     });
     const watchdogCounters = new Map();
 
-    startCAN(coipPort, socketIOServer, watchdogCounters);
     startSocketIO(socketIOServer, watchdogCounters);
-};
+    startCAN(coipPort, socketIOServer, watchdogCounters);
+}
 
 
-const startSocketIO = (socketIOServer, watchdogCounters) => {
+function startSocketIO(socketIOServer, watchdogCounters) {
 
     const IO = socketIOServer;
 
@@ -39,7 +26,7 @@ const startSocketIO = (socketIOServer, watchdogCounters) => {
 
     const subscribedChannels = new Map();
 
-    const syncSubscribedSignals = (client) => {
+    function syncSubscribedSignals(client) {
         for (const channel of subscribedChannels.keys()) {
             const storedResponse = subscribedChannels.get(channel);
             if (client === storedResponse.client) {
@@ -72,16 +59,16 @@ const startSocketIO = (socketIOServer, watchdogCounters) => {
                 }
             }
         }
-    };
+    }
 
-    const needsUpdate = (client) => {
+    function needsUpdate(client) {
         if (client) {
             if (watchdogCounters.has(client)) {
                 return (watchdogCounters.get(client) > 0);
             }
         }
         return false;
-    };
+    }
 
     let client_count = 0;
 
@@ -102,7 +89,7 @@ const startSocketIO = (socketIOServer, watchdogCounters) => {
                 }
 
                 // send to real zone controllers
-                send_vss_cmd(msg);
+                send_vss(msg);
                 IO.emit("set", msg);
             }
         });
@@ -184,7 +171,7 @@ const startSocketIO = (socketIOServer, watchdogCounters) => {
         });
 
         socket.on("send_udp", (msg) => {
-            send_udp(msg);
+            send_udp(msg.data);
         });
 
         socket.on("watchdog_udp", (msg) => {
@@ -254,4 +241,4 @@ const startSocketIO = (socketIOServer, watchdogCounters) => {
             }
         }
     }, NOTIFY_INTERVAL);
-};
+}

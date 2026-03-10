@@ -1,5 +1,5 @@
-import { serverInfo } from "./VssSocket";
-import routingDB from "../signal_db/routingDB.json";
+import { serverInfo } from './VssSocket';
+import routingDB from '../signal_db/routingDB.json';
 
 
 const MSG_HEADER_LEN = 7;
